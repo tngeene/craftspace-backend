@@ -1,10 +1,8 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-# limit upload of events by artist only
-
-class IsArtistOrDissallow(BasePermission):
-    message = 'You need to be an artist to perform this action'
-
+#limit upload of products to artists only
+class IsArtistOrDisallow(BasePermission):
+    message = "Oops, you need to be an artist to perform this action"
     def has_permission(self, request, view):
         if request.user.membership_type != 'Artist':
             return False
