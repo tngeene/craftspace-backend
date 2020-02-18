@@ -1,0 +1,95 @@
+{% extends 'dashboard/base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}
+    All Orders
+{% endblock %}
+
+{% block styles %}
+    <link href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="text-center py-3">Orders</h3>
+                    <table class="table table-striped py-3" id="data-table">
+                        <thead>
+                        <tr>
+                             <th>Order No.</th>
+                             <th>Date</th>
+                             <th>Customer</th>
+                             <th>Payment Status</th>
+                             <th>Total</th>
+                             <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                             <tr>
+                                <td>#245</td>
+                                <td>2 hours ago</td>
+                                <td>Lorenzo Maina</td>
+                                <td><span class="badge badge-danger ml-2">U</span>Unpaid</td>
+                                <td>56000</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#245</td>
+                                <td>3 days ago</td>
+                                <td>Lorenzo Maina</td>
+                                <td><span class="badge badge-success ml-2">fp</span>Fully paid</td>
+                                <td>35000</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#245</td>
+                                <td>9 hours ago</td>
+                                <td>Lorenzo Maina</td>
+                                <td><span class="badge badge-warning ml-2">pp</span>Partially paid</td>
+                                <td>470000</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#245</td>
+                                <td>8 hours ago</td>
+                                <td>Lorenzo Maina</td>
+                                <td><span class="badge badge-danger ml-2">u</span>Unpaid</td>
+                                <td>69000</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        <tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
+    <script>
+        $('#data-table').DataTable();
+    </script>
+{% endblock %}

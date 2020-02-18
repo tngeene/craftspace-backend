@@ -1,0 +1,409 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-xl-3 col-sm-6">
+        <div class="card mb-4 bg-purple">
+            <div class="card-body">
+                <div class="media d-flex align-items-center ">
+                    <div class="mr-4 rounded-circle bg-white sr-icon-box text-purple">
+                        <i class="vl_smart-watch"></i>
+                    </div>
+                    <div class="media-body text-light">
+                        <h4 class="text-uppercase mb-0 weight500">{{  artists_count }}</h4>
+                        <span> Artists </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card mb-4 bg-purple">
+            <div class="card-body">
+                <div class="media d-flex align-items-center ">
+                    <div class="mr-4 rounded-circle bg-white sr-icon-box text-purple">
+                        <i class="vl_shopping-bag2"></i>
+                    </div>
+                    <div class="media-body text-light">
+                        <h4 class="text-uppercase mb-0 weight500">  {{ collectors_count }} </h4>
+                        <span>Collectors</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card mb-4 bg-primary">
+            <div class="card-body">
+                <div class="media d-flex align-items-center">
+                    <div class="mr-4 rounded-circle bg-white  sr-icon-box text-primary">
+                        <i class="vl_graph-bar"></i>
+                    </div>
+                    <div class="media-body text-white">
+                        <h4 class="text-uppercase mb-0 weight500">900000</h4>
+                        <span>Sales</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card mb-4 bg-info">
+            <div class="card-body">
+                <div class="media d-flex align-items-center">
+                    <div class="mr-4 rounded-circle bg-white sr-icon-box text-danger">
+                        <i class="vl_shopping-bag3"></i>
+                    </div>
+                    <div class="media-body text-white">
+                        <h4 class="text-uppercase mb-0 weight500">80</h4>
+                        <span>Art Pieces</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-sm-6">
+        <div class="card mb-4 bg-success">
+            <div class="card-body">
+                <div class="media d-flex align-items-center">
+                    <div class="mr-4 rounded-circle bg-white sr-icon-box text-success">
+                        <i class="vl_user-male"></i>
+                    </div>
+                    <div class="media-body text-white">
+                        <h4 class="text-uppercase mb-0 weight500"> {{ events_count }} </h4>
+                        <span>Exhibitions</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card mb-4 bg-success">
+            <div class="card-body">
+                <div class="media d-flex align-items-center">
+                    <div class="mr-4 rounded-circle bg-white sr-icon-box text-success">
+                        <i class="vl_user-male"></i>
+                    </div>
+                    <div class="media-body text-white">
+                        <h4 class="text-uppercase mb-0 weight500">4</h4>
+                        <span>System users</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center py-3">Recently Registered Artists </h3>
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone number</th>
+                                <th>Email</th>
+                                <th>Date Registered</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for user in recent_artists %}
+                            <tr>
+                                <td>{{ user.get_full_name }}</td>
+                                <td> {{ user.phone_number }} </td>
+                                <td> {{ user.email }} </td>
+                                <td> {{ user.date_joined }} </td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr class="text-center">
+                                <td colspan="5">No Registered Artists Yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center py-3">Recently Registered Collectors </h3>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone number</th>
+                                <th>Email</th>
+                                <th>Date Registered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in recent_collectors %}
+                            <tr>
+                                <td>{{ user.get_full_name }}</td>
+                                <td> {{ user.phone_number }} </td>
+                                <td> {{ user.email }} </td>
+                                <td> {{ user.date_joined }} </td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr class="text-center">
+                                <td colspan="5">No Registered Collectors Yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center py-3">Recently Uploaded Exhibitions </h3>
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Uploaded By</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for event in recent_events %}
+                            <tr>
+                                <td>{{ event.name }}</td>
+                                <td> {{ event.description }} </td>
+                                <td> {{ event.uploaded_by.get_full_name }} </td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr class="text-center">
+                                <td colspan="5">No Exhibitions Uploaded Yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center py-3">Recently Added Art Pieces</h3>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Sku</th>
+                                <th>Category</th>
+                                <th>Units</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>LG plasma 4K tv</td>
+                                <td>#4838</td>
+                                <td>Electronics</td>
+                                <td>67</td>
+                                <td>70000</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LG plasma 4K tv</td>
+                                <td>#4838</td>
+                                <td>Electronics</td>
+                                <td>67</td>
+                                <td>70000</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LG plasma 4K tv</td>
+                                <td>#4838</td>
+                                <td>Electronics</td>
+                                <td>67</td>
+                                <td>70000</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LG plasma 4K tv</td>
+                                <td>#4838</td>
+                                <td>Electronics</td>
+                                <td>67</td>
+                                <td>70000</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LG plasma 4K tv</td>
+                                <td>#4838</td>
+                                <td>Electronics</td>
+                                <td>67</td>
+                                <td>70000</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LG plasma 4K tv</td>
+                                <td>#4838</td>
+                                <td>Electronics</td>
+                                <td>67</td>
+                                <td>70000</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center py-3">Recently Placed Orders</h3>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Order No.</th>
+                                <th>Product</th>
+                                <th>Customer</th>
+                                <th>Quantity</th>
+                                <th>Total Price</th>
+                                <th>Order Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>458</td>
+                                <td>LG OLED tv</td>
+                                <td>John Mwelusi</td>
+                                <td>5</td>
+                                <td>Ksh 400,000</td>
+                                <td> <span class="badge badge-pill badge-info">Pending </span> </td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>458</td>
+                                <td>LG OLED tv</td>
+                                <td>John Mwelusi</td>
+                                <td>5</td>
+                                <td>Ksh 400,000</td>
+                                <td> <span class="badge badge-pill badge-success">Complete </span> </td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>458</td>
+                                <td>LG OLED tv</td>
+                                <td>John Mwelusi</td>
+                                <td>5</td>
+                                <td>Ksh 400,000</td>
+                                <td> <span class="badge badge-pill badge-warning">Pending </span> </td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>458</td>
+                                <td>LG OLED tv</td>
+                                <td>John Mwelusi</td>
+                                <td>5</td>
+                                <td>Ksh 400,000</td>
+                                <td> <span class="badge badge-pill badge-danger"> Failed </span> </td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+
+{% endblock %}

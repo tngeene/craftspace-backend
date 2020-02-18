@@ -1,0 +1,74 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Mosaddek">
+
+    <link rel="icon" type="image/png" href="{% static 'core/img/samawat.png' %}">
+    <title>{% block title %}Dashboard{% endblock %} | Craftspace </title>
+    <link href="//fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="{% static 'dashboard/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'dashboard/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'dashboard/vendor/dashlab-icon/dashlab-icon.css' %}" rel="stylesheet">
+    <link href="{% static 'dashboard/vendor/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'dashboard/vendor/themify-icons/css/themify-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'dashboard/vendor/weather-icons/css/weather-icons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'dashboard/vendor/jquery-ui/jquery-ui.min.css' %}" rel="stylesheet">
+    <link href="{% static 'dashboard/vendor/icheck/skins/all.css' %}" rel="stylesheet">
+    {% block styles %}{% endblock %}
+    <link href="{% static 'dashboard/css/main.css' %}" rel="stylesheet">
+</head>
+
+<body class="left-sidebar-fixed">
+{% include 'dashboard/header.html' %}
+
+<div class="app-body">
+    {% include 'dashboard/side-nav.html' %}
+
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            {% block content %}{% endblock %}
+        </div>
+
+        <footer class="sticky-footer">
+            <div class="container">
+                <div class="text-center">
+                    <small>Copyright &copy; Craftspace Art Ordering System {% now 'Y' %}</small>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!--basic scripts-->
+<script src="{% static 'dashboard/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/jquery-ui/jquery-ui.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/popper.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/jquery.dcjqaccordion.2.7.js' %}"></script>
+
+{% block scripts %}{% endblock %}
+
+
+<!--[if lt IE 9]>
+    <script src="{% static 'dashboard/vendor/modernizr.js' %}"></script>
+    <![endif]-->
+
+<!--basic scripts initialization-->
+<script src="{% static 'dashboard/js/scripts.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        setInterval(() => {
+            $("#clock").html(new Date().toLocaleTimeString());
+        }, 1000);
+    })
+</script>
+</body>
+</html>
+

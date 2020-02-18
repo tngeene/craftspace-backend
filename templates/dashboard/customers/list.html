@@ -1,0 +1,90 @@
+{% extends 'dashboard/base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}
+    All Customers
+{% endblock %}
+
+{% block styles %}
+    <link href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="text-center py-3">All Customers</h3>
+                    <table class="table table-striped py-3" id="data-table">
+                        <thead>
+                        <tr>
+                             <th>First Name</th>
+                             <th>Last Name</th>
+                             <th>Email</th>
+                             <th>No of Orders</th>
+                             <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                             <tr>
+                                <td>Lorenzo</td>
+                                <td>Maina</td>
+                                <td>lmaina@gmail.com</td>
+                                <td>25</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                               <td>Lorenzo</td>
+                                <td>Maina</td>
+                                <td>lmaina@gmail.com</td>
+                                <td>75</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Lorenzo</td>
+                                <td>Maina</td>
+                                <td>lmaina@gmail.com</td>
+                                <td>54</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Lorenzo</td>
+                                <td>Maina</td>
+                                <td>lmaina@gmail.com</td>
+                                <td>57</td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        <tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
+    <script>
+        $('#data-table').DataTable();
+    </script>
+{% endblock %}
