@@ -123,13 +123,12 @@ STATIC_ROOT = 'static'
 MEDIA_URL = '/medial/'
 MEDIA_ROOT = 'media'
 
-# uncomment section to use sendgrid
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.sendgrid.net'
-# EMAIL_USE_TLS = True
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'apikey'
-# EMAIL_HOST_PASSWORD = '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'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 DJOSER = {
     'user_create': 'users.serializers.UserRegistrationSerializer',
