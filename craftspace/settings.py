@@ -1,4 +1,5 @@
 import os
+import cloudinary
 from datetime import timedelta
 from decouple import config
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -32,10 +33,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'djoser',
-    'phonenumber_field',
     'corsheaders',
     'widget_tweaks',
-    'datetimepicker',
+    'cloudinary',
 
     'allauth',
     'allauth.account',
@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'core',
     'users',
     'dashboard',
-    'products'
+    'products',
+    'orders',
 ]
 
 SITE_ID =1
@@ -120,34 +121,48 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 
-MEDIA_URL = '/medial/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media'
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-EMAIL_PORT = config('EMAIL_PORT')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+# uncomment to use sendgrid
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = config('EMAIL_HOST')
+# EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+# EMAIL_PORT = config('EMAIL_PORT')
+# EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 DJOSER = {
-    'user_create': 'users.serializers.UserRegistrationSerializer',
-    'user': 'users.serializers.CustomUserSerializer',
-    'current_user': 'users.serializers.CustomUserSerializer',
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'SERIALIZERS':{
+        'user_create': 'users.apiv1.serializers.users_serializer.UserRegistrationSerializer',
+        'user': 'users.apiv1.serializers.users_serializer.CustomUserSerializer',
+        'current_user': 'users.apiv1.serializers.users_serializer.CustomUserSerializer',
+    },
     'LOGIN_FIELD': 'email',
-    'SEND_ACTIVATION_EMAIL': True,
-    'SEND_CONFIRMATION_EMAIL': True,
-    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
-    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
-    'LOGOUT_ON_PASSWORD_CHANGE': True,
-    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
-    'TOKEN_MODEL': 'users.models.Token',
-    'ACTIVATION_URL': 'auth/activate/{uid}/{token}',
+    # 'SEND_ACTIVATION_EMAIL': True,
+    # 'SEND_CONFIRMATION_EMAIL': True,
+    # 'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    # 'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
+    # 'LOGOUT_ON_PASSWORD_CHANGE': True,
+    # 'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
+    # 'TOKEN_MODEL': 'users.models.Token',
+    # 'ACTIVATION_URL': 'auth/activate/{uid}/{token}',
 }
+cloudinary.config(
+    cloud_name='drk0kubip',
+    api_key='323542637277415',
+    api_secret='-i975ZpUNBKp-4O-2HskFX7OlPU'
+)
+
 
 FRONTEND_HOST = config('FRONTEND_HOST')
 
-CORS_ORIGIN_WHITELIST = [FRONTEND_HOST]
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS =True
+CORS_ORIGIN_WHITELIST = [
+    FRONTEND_HOST,
+    'http://localhost:3000',
+]
 
 AUTH_USER_MODEL = 'users.UserAccount'
 

@@ -8,7 +8,7 @@ class UserRegistrationSerializer(UserCreateSerializer):
     Overrides djoser registration behavior to accept membership type on sign up
     """
     class Meta(UserCreateSerializer.Meta):
-        fields = ('email','first_name','last_name','phone_number','password','membership-type',)
+        fields = ('email','first_name','last_name','phone_number','membership_type','password',)
 
 class CustomUserSerializer(UserSerializer):
     """

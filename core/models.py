@@ -12,4 +12,4 @@ class Event(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.name} {self.date} {self.uploaded_by} '
+        return f'{self.name} {self.date} {self.uploaded_by}'

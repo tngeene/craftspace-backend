@@ -20,12 +20,12 @@ class DashboardTemplateView(DashboardView,TemplateView):
         event = Event.objects.all()
         context = super(DashboardTemplateView, self).get_context_data(**kwargs)
 
-        
-        context['collectors_count'] = UserAccount.objects.filter(membership_type ='Artist').count()
-        context['artists_count'] = UserAccount.objects.filter(membership_type ='Collector').count()
+
+        context['collectors_count'] = collector.count()
+        context['artists_count'] = artist.count()
         context['events_count'] = event.count()
         context['recent_artists'] = artist.order_by('-pk')[:10]
         context['recent_collectors'] = collector.order_by('-pk')[:10]
         context['recent_events'] = event.order_by('-pk')[:10]
-        
+
         return context

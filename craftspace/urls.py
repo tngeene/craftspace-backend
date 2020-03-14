@@ -8,7 +8,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/',include('users.apiv1.urls')),
     path('api/v1/',include('core.apiv1.urls')),
-    path('api/v1/',include('products.apiv1.urls')),
+    path('api/v1/art-pieces/',include('products.apiv1.urls')),
+    path('api/v1/',include('orders.apiv1.urls')),
     path('api/v1/auth/', include('djoser.urls')),
     path('api/v1/auth/', include('djoser.urls.jwt')),
     path('dashboard/',include('dashboard.urls',namespace='dashboard'))
@@ -16,3 +17,4 @@ urlpatterns = [
 
 
 urlpatterns + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+
