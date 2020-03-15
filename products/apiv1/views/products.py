@@ -45,8 +45,7 @@ class ProductDestroyAPIView(RetrieveDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
-    def perform_destroy(self, serializer):
-        instance = serializer.save()
+
 class CategoryAPIView(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
