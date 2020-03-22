@@ -44,6 +44,7 @@ class ProductListAPIView(ListAPIView):
 class ProductDestroyAPIView(RetrieveDestroyAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+    permission_classes = [IsArtistOrDisallow,IsAdminUser]
 
 
 class CategoryAPIView(ModelViewSet):
