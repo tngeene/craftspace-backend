@@ -47,6 +47,7 @@ class ArtistProfile(models.Model):
         UserAccount,on_delete=models.CASCADE,related_name='artist_profile'
     )
     bio = models.TextField(blank=True)
+    photo = models.ImageField(upload_to="artists/profile_photos",null=True)
     county = models.CharField(max_length=50)
     birth_place = models.CharField(max_length=100)
     date_joined = models.DateField(auto_now_add=True)

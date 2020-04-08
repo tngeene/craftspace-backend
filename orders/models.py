@@ -45,3 +45,24 @@ class Order(models.Model):
     @property
     def is_completed(self):
         return True if self.status == "paid" else False
+
+MEDIUM_CHOICES = (
+    ('Canvas', 'Canvas'),
+    ('Wood', 'Wood'),
+    ('Soapstone', 'Soap Stone'),
+)
+
+class CustomOrder(models.Model):
+    image = models.ImageField(upload_to="custom_orders/images")
+    description = models.TextField()
+    size = models.TextField()
+    medium = models.CharField(max_length=50,choices=MEDIUM_CHOICES)
+    due_date = models.DateField()
+    artist = models.ForeignKey(User,on_delete=models.CASCADE,related_name='custom_order_artist')
+    requested_by = models.ForeignKey(User, on_delete=models.SET_NULL,related_name='requester',null=True)
+    phone_number = models.CharField(max_length=20,null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f" {self.requested_by} {self.due_date} {self.artist} "

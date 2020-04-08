@@ -5,6 +5,7 @@ from cloudinary.models import CloudinaryField
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    cover_photo = models.ImageField(null=True)
 
     class Meta:
         verbose_name_plural = "Categories"

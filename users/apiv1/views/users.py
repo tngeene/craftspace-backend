@@ -1,6 +1,6 @@
-from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, ListAPIView, RetrieveAPIView
 
-from users.models import UserAccount
+from users.models import UserAccount, ArtistProfile
 from users.apiv1.serializers.users_serializer import UserAccountSerializer
 
 class UserListAPIView(ListAPIView):
