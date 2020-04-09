@@ -1,4 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
+from django_filters import rest_framework as filters
 from rest_framework.generics import CreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from ..permissions import IsArtistOrDissallow, IsOwnerOrReadOnly
@@ -9,7 +10,7 @@ class ArtistProfileApiView(ModelViewSet):
     queryset = ArtistProfile.objects.all()
     serializer_class = ArtistProfileSerializer
     http_method_names = ['get','post','options','head','put','patch',]
-    permission_classes = [IsArtistOrDissallow,IsAuthenticated]
+
 
 class ArtistProfileCreateAPIView(CreateAPIView):
     serializer_class = ArtistProfileSerializer
@@ -28,4 +29,5 @@ class ArtistProfileUpdateAPIView(RetrieveUpdateDestroyAPIView):
 class ArtistProfileListAPIView(ListAPIView):
     serializer_class = ArtistProfileSerializer
     queryset = ArtistProfile.objects.all()
-    
+    filter_backends = [filters.DjangoFilterBackend,]
+    filterset_fields = ['user',]

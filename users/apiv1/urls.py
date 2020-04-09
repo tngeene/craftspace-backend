@@ -10,8 +10,8 @@ router.register('collectors/profile',CollectorProfileApiView,basename='collector
 urlpatterns = [
     path('artists/', ArtistListAPIView.as_view()),
     path('artists/profile/add', ArtistProfileCreateAPIView.as_view()),
-    path('artists/profiles', ArtistProfileListAPIView.as_view()),
-    path('artists/profile/<int:pk>/edit',ArtistProfileUpdateAPIView.as_view()),
+    path('artists/profiles/', ArtistProfileListAPIView.as_view()),
+    path('artists/profile/<int:pk>/',ArtistProfileUpdateAPIView.as_view()),
     path('collectors/', CollectorListAPIView.as_view()),
     path('',include(router.urls)),
 ]

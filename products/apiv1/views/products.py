@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import filters
+from django_filters import rest_framework as filters
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from products.apiv1.serializers.product_seriliazers import ProductSerializer
@@ -38,8 +38,8 @@ class ProductUpdateAPIView(RetrieveUpdateAPIView):
 
 class ProductListAPIView(ListAPIView):
     serializer_class = ProductSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['category__id','uploaded_by__id']
+    filter_backends = [filters.DjangoFilterBackend,]
+    filterset_fields = ['category','uploaded_by']
 
     def get_queryset(self):
         return Product.objects.all()

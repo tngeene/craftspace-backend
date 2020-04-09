@@ -44,24 +44,24 @@ class UserAccount(AbstractUser):
 
 class ArtistProfile(models.Model):
     user = models.OneToOneField(
-        UserAccount,on_delete=models.CASCADE,related_name='artist_profile'
+        UserAccount,on_delete=models.CASCADE,limit_choices_to={'membership_type': 'Artist'},related_name='artist_profile'
     )
     bio = models.TextField(blank=True)
     photo = models.ImageField(upload_to="artists/profile_photos",null=True)
     county = models.CharField(max_length=50)
     birth_place = models.CharField(max_length=100)
-    date_joined = models.DateField(auto_now_add=True)
+    created_on = models.DateField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
     def __str__(self):
         return  self.user.username
 
 class CollectorProfile(models.Model):
     user = models.OneToOneField(
-        UserAccount,on_delete=models.CASCADE,related_name='collector_profile'
+        UserAccount,on_delete=models.CASCADE,limit_choices_to={'membership_type': 'Collector'},related_name='collector_profile'
     )
     billing_address = models.CharField(max_length= 255,blank=True)
     county = models.CharField(max_length=100)
-    date_joined = models.DateField(auto_now_add=True)
+    created_joined = models.DateField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
 
     def __str__(self):
