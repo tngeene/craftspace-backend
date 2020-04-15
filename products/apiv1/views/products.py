@@ -54,4 +54,4 @@ class CategoryAPIView(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     http_method_name = ['get','post','head', 'put','patch',]
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]

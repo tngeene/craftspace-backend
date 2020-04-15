@@ -23,7 +23,6 @@ class ArtistProfileCreateAPIView(CreateAPIView):
 
 class ArtistProfileUpdateAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = ArtistProfileSerializer
-    permission_classes = [IsOwnerOrReadOnly]
     queryset = ArtistProfile.objects.all()
 
 class ArtistProfileListAPIView(ListAPIView):

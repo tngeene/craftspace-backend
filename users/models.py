@@ -61,19 +61,19 @@ class CollectorProfile(models.Model):
     )
     billing_address = models.CharField(max_length= 255,blank=True)
     county = models.CharField(max_length=100)
-    created_joined = models.DateField(auto_now_add=True)
+    created_on = models.DateField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.user.username
 
-class Token(AuthToken):
-    key = models.CharField(_('Key'), max_length=40, db_index=True, unique=True)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='auth_tokens',
-        on_delete=models.CASCADE, verbose_name=_('User')
-    )
-    name = models.CharField(_('Name'), max_length=64)
+# class Token(AuthToken):
+#     auth_key = models.CharField(_('Key'), max_length=40, db_index=True, unique=True)
+#     user = models.ForeignKey(
+#         settings.AUTH_USER_MODEL, related_name='auth_tokens',
+#         on_delete=models.CASCADE, verbose_name=_('User')
+#     )
+#     name = models.CharField(_('Name'), max_length=64)
 
-    class Meta:
-        unique_together = (('user', 'name'),)
+    # class Meta:
+    #     unique_together = (('user', 'name'),)
