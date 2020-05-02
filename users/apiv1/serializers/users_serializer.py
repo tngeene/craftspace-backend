@@ -8,14 +8,14 @@ class UserRegistrationSerializer(UserCreateSerializer):
     Overrides djoser registration behavior to accept membership type on sign up
     """
     class Meta(UserCreateSerializer.Meta):
-        fields = ('email','first_name','last_name','phone_number','membership_type','password',)
+        fields = ('id','email','first_name','last_name','phone_number','membership_type','password',)
 
 class CustomUserSerializer(UserSerializer):
     """
     override djoser's user serializer to reflect AbstractUser fields
     """
     class Meta(UserSerializer.Meta):
-        fields = ('email','first_name','last_name','phone_number','membership_type',)
+        fields = ('id','email','first_name','last_name','phone_number','membership_type',)
 
 
 class UserAccountSerializer(serializers.ModelSerializer):

@@ -30,3 +30,6 @@ class ArtistProfileListAPIView(ListAPIView):
     queryset = ArtistProfile.objects.all()
     filter_backends = [filters.DjangoFilterBackend,]
     filterset_fields = ['user',]
+
+class ArtistProfileDetailView(RetrieveAPIView):
+    serializer_class  = ArtistProfileSerializer

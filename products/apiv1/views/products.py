@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from django_filters import rest_framework as filters
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from products.apiv1.serializers.product_seriliazers import ProductSerializer
+from products.apiv1.serializers.product_seriliazers import ProductSerializer, ProductUploadSerializer
 from products.apiv1.serializers.category_serializers import CategorySerializer
 from ..permissions import IsArtistOrDisallow
 from products.models import Product, Category
@@ -22,7 +22,7 @@ class ProductDetailsAPIView(RetrieveAPIView):
     queryset = Product.objects.all()
 
 class ProductCreateAPIView(CreateAPIView):
-    serializer_class = ProductSerializer
+    serializer_class = ProductUploadSerializer
     permission_classes = [IsArtistOrDisallow, IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -30,7 +30,7 @@ class ProductCreateAPIView(CreateAPIView):
         return serializer.save(uploaded_by=user)
 
 class ProductUpdateAPIView(RetrieveUpdateAPIView):
-    serializer_class = ProductSerializer
+    serializer_class = ProductUploadSerializer
     queryset = Product.objects.all()
 
     def perform_update(self, serializer):

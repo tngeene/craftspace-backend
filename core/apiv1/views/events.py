@@ -1,4 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
+from django_filters import rest_framework as filters
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from core.apiv1.serializers.events_serializer import EventSerializer
@@ -26,6 +27,8 @@ class EventCreateAPIView(CreateAPIView):
 class EventListAPIView(ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    filter_backends = [filters.DjangoFilterBackend,]
+    filterset_fields = ['uploaded_by',]
 
 class EventRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = EventSerializer
