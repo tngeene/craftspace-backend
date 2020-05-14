@@ -10,7 +10,7 @@ class Event(models.Model):
     banner = models.ImageField(blank=True,upload_to='events/banners')
     venue = models.CharField(null=True,max_length=255)
     ticket_price = models.FloatField(default=0.00, null=True)
-    uploaded_by = models.ForeignKey(UserAccount,on_delete=models.CASCADE)
+    uploaded_by = models.ForeignKey(UserAccount,related_name='my_events',on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

@@ -19,7 +19,7 @@ class ArtistProfileCreateAPIView(CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         return serializer.save(user=user)
-    
+
 
 class ArtistProfileUpdateAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = ArtistProfileSerializer

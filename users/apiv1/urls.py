@@ -4,6 +4,7 @@ from users.apiv1.views.users import ArtistListAPIView, CollectorListAPIView
 from users.apiv1.views.artists import ArtistProfileApiView, ArtistProfileCreateAPIView, ArtistProfileUpdateAPIView, ArtistProfileListAPIView
 from users.apiv1.views.collectors import CollectorProfileApiView
 
+
 router = DefaultRouter()
 # router.register('artists/profile',ArtistProfileApiView,basename='artist_profile')
 router.register('collectors/profile',CollectorProfileApiView,basename='collector_profile')

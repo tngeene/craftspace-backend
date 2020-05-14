@@ -3,20 +3,43 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.status import HTTP_201_CREATED, HTTP_202_ACCEPTED 
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from orders.apiv1.serializers.order_serializers import CartSerializer, OrderSerializer
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from orders.apiv1.serializers.order_serializers import CartSerializer, OrderSerializer, CartItemSerializer
 from ..permissions import IsCollectorOrIsAdmin
 from django.shortcuts import get_object_or_404
 
 
-from orders.models import Order, Cart
+from orders.models import Order, Cart, cartItem
 from products.models import Product
+
+class CartItemView(ModelViewSet):
+    queryset = cartItem.objects.all()
+    serializer_class  = CartItemSerializer
 
 class OrderAPIView(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     # GET for admin, POST for collectors
     permission_classes = [IsAuthenticated,IsCollectorOrIsAdmin,]
+
+
+
+class OrderPostView(APIView):
+    permission_classes = [AllowAny,]
+
+    def post(self, request, **kwargs):
+        data = request.data
+        order_items = data['products']
+
+        for item in order_items:
+            cart_items = get_object_or_404(Product, item)
+            order = Order.objects.create(status=data['status'],user=data['user'],
+            phone_number=data['phone_number'],order_total=data['order_total'])
+            order.order_items.add(cart_items)
+            order.save()
+        return Response(status=status.HTTP_200_OK)
+
 
 class CartListAPIView(generics.ListAPIView):
     queryset = Cart.objects.all()

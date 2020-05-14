@@ -39,7 +39,7 @@ class UserAccount(AbstractUser):
     objects = UserAccountManager()
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} {self.membership_type}'
+        return f'{self.first_name} {self.last_name}'
 
 
 class ArtistProfile(models.Model):
@@ -52,6 +52,7 @@ class ArtistProfile(models.Model):
     birth_place = models.CharField(max_length=100)
     created_on = models.DateField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
+
     def __str__(self):
         return  self.user.username
 

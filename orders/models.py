@@ -5,6 +5,13 @@ from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
+class cartItem(models.Model):
+    owner = models.ForeignKey(User,related_name='cart_items_owner',on_delete=models.SET_NULL,null=True,blank=True)
+    product = models.ForeignKey(Product,related_name='cart_products',on_delete=models.SET_NULL,null=True)
+    quantities = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.product} {self.quantities}"
 class Cart(models.Model):
     owner = models.OneToOneField(User,related_name="cart",on_delete=models.CASCADE,null=True,blank=True)
     item = models.ForeignKey(Product, on_delete=models.CASCADE,null=True,blank=True)
@@ -22,24 +29,25 @@ class Cart(models.Model):
         self.save()
 
 ORDER_STATUS = (
-    ('placed','Placed'),
-    ('paid','Paid'),
+    ('placed', 'Placed'),
+    ('paid', 'Paid'),
 )
 
 class Order(models.Model):
     status = models.CharField(max_length=15,choices=ORDER_STATUS,default='created')
 # if anyone tries to delete an entry in this look-up table, it prevents from deleting if it is tied to any records
-    user = models.ForeignKey(User,on_delete=models.PROTECT)
-    order_items = models.ManyToManyField(Cart)
+    user = models.ForeignKey(User,on_delete=models.PROTECT,blank=True,null=True)
+    order_items = models.ManyToManyField(cartItem)
+    phone_number = models.CharField(max_length=15,null=True,blank=True)
     order_total = models.DecimalField(max_digits=50,decimal_places=2,null=True)
     order_date = models.DateTimeField(auto_now_add=True)
 
-    def total_price(self):
-        totals = 0
-        for item in self.order_items.all():
-            totals += item.total
-        self.order_total = totals
-        self.save()
+    # def total_price(self):
+    #     totals = 0
+    #     for item in self.order_items.all():
+    #         totals += item.total
+    #     self.order_total = totals
+    #     self.save()
 
 # evaluates if an order has been completed only if the status is paid
     @property
