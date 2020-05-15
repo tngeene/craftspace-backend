@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import  ModelSerializer
-from orders.models import Order, Cart, cartItem
+from orders.models import Order, Cart, CartItem
 from products.apiv1.serializers.product_seriliazers import ProductSerializer
 
 class CartSerializer(ModelSerializer):
@@ -14,7 +14,7 @@ class CartItemSerializer(ModelSerializer):
     owner = serializers.StringRelatedField(read_only=True)
     product = ProductSerializer()
     class Meta:
-        model = cartItem
+        model = CartItem
         fields = '__all__'
 
 

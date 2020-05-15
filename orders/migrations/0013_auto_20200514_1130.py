@@ -15,12 +15,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='cartitem',
+            model_name='CartItem',
             name='owner',
             field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='cart_items_owner', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AlterField(
-            model_name='cartitem',
+            model_name='CartItem',
             name='products',
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='cart_products', to='products.Product'),
         ),

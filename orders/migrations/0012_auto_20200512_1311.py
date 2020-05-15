@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='cartItem',
+            name='CartItem',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('owner', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='cart_items', to=settings.AUTH_USER_MODEL)),
@@ -25,6 +25,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='order',
             name='order_items',
-            field=models.ManyToManyField(to='orders.cartItem'),
+            field=models.ManyToManyField(to='orders.CartItem'),
         ),
     ]

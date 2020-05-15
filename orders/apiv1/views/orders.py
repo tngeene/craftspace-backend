@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.status import HTTP_201_CREATED, HTTP_202_ACCEPTED 
+from rest_framework.status import HTTP_201_CREATED, HTTP_202_ACCEPTED
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
@@ -10,11 +10,11 @@ from ..permissions import IsCollectorOrIsAdmin
 from django.shortcuts import get_object_or_404
 
 
-from orders.models import Order, Cart, cartItem
+from orders.models import Order, Cart, CartItem
 from products.models import Product
 
 class CartItemView(ModelViewSet):
-    queryset = cartItem.objects.all()
+    queryset = CartItem.objects.all()
     serializer_class  = CartItemSerializer
 
 class OrderAPIView(ModelViewSet):
@@ -30,12 +30,14 @@ class OrderPostView(APIView):
 
     def post(self, request, **kwargs):
         data = request.data
-        order_items = data['products']
-
-        for item in order_items:
-            cart_items = get_object_or_404(Product, item)
-            order = Order.objects.create(status=data['status'],user=data['user'],
+        order_items = data['order_items']
+        order = Order.objects.create(status=data['status'],user=self.request.user,
             phone_number=data['phone_number'],order_total=data['order_total'])
+        for item in order_items:
+            print(f"items in cart are {item['product']['id']}")
+            cart_product = get_object_or_404(Product, id=item['product']['id'])
+            print(f'cart prod is {cart_product}')
+            cart_items = CartItem.objects.create(product=cart_product,quantities=item['quantities'],owner=self.request.user)
             order.order_items.add(cart_items)
             order.save()
         return Response(status=status.HTTP_200_OK)
