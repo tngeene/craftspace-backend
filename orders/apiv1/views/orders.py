@@ -8,10 +8,13 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from orders.apiv1.serializers.order_serializers import CartSerializer, OrderSerializer, CartItemSerializer
 from ..permissions import IsCollectorOrIsAdmin
 from django.shortcuts import get_object_or_404
-
+from payments.mpesa_credentials import MpesaAccessToken, LipaNaMpesaPassword
+import json
+import requests
 
 from orders.models import Order, Cart, CartItem
 from products.models import Product
+from payments.models import MpesaPayment
 
 class CartItemView(ModelViewSet):
     queryset = CartItem.objects.all()
@@ -24,20 +27,88 @@ class OrderAPIView(ModelViewSet):
     permission_classes = [IsAuthenticated,IsCollectorOrIsAdmin,]
 
 
-
+# mpesa variables
+access_token = MpesaAccessToken.validated_mpesa_access_token
+# print(f"access token is {access_token}")
+api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
 class OrderPostView(APIView):
     permission_classes = [AllowAny,]
 
     def post(self, request, **kwargs):
+
+        headers = {"Authorization": "Bearer %s" % access_token} #mpesa header with access token
         data = request.data
-        order_items = data['order_items']
-        order = Order.objects.create(status=data['status'],user=self.request.user,
+        # checks if a client is registered in the system, if not sets the client value to null
+        if self.request.user.is_anonymous:
+            order = Order.objects.create(phone_number=data['phone_number'],order_total=data['order_total'])
+        # mpesa logic
+            request = {
+                "BusinessShortCode": LipaNaMpesaPassword.business_shortcode,
+                "Password": LipaNaMpesaPassword.decode_password,
+                 "Timestamp": LipaNaMpesaPassword.lipa_time,
+                 "TransactionType": "CustomerPayBillOnline",
+                 "Amount": data['order_total'],
+                 "PartyA": data['phone_number'],  # phone number getting stk push
+                 "PartyB": LipaNaMpesaPassword.business_shortcode,  #business till no.or paybill
+                 "PhoneNumber": data['phone_number'], # phone number getting stk push same as party A
+                 "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
+                 "AccountReference": "Craftspace",
+                 "TransactionDesc": "Testing stk push"
+                }
+            response = requests.post(api_url, json=request, headers=headers)
+            print(f"response is {response.text}")
+            print(f"response body is {response.body}")
+            print(f"request is {request}")
+        else:
+            order = Order.objects.create(user=self.request.user,
             phone_number=data['phone_number'],order_total=data['order_total'])
+
+            print(f"order total {order.order_total}")
+        # mpesa logic
+            request = {
+                "BusinessShortCode": LipaNaMpesaPassword.business_shortcode,
+                "Password": LipaNaMpesaPassword.decode_password,
+                 "Timestamp": LipaNaMpesaPassword.lipa_time,
+                 "TransactionType": "CustomerPayBillOnline",
+                 "Amount": data['order_total'],
+                 "PartyA": data['phone_number'],  # phone number getting stk push
+                 "PartyB": LipaNaMpesaPassword.business_shortcode,  #business till no.or paybill
+                 "PhoneNumber": data['phone_number'], # phone number getting stk push same as party A
+                 "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
+                 "AccountReference": "Craftspace",
+                 "TransactionDesc": "Testing stk push"
+                }
+            response = requests.post(api_url, json=request, headers=headers)
+           
+
+        # saving the processed order payment to db
+        # mpesa_body = request.decode('utf-8')
+        # mpesa_payment = json.loads(mpesa_body)
+        # payment = MpesaPayment.objects.create(
+        #     first_name = mpesa_payment['FirstName'],
+        #     last_name=mpesa_payment['LastName'],
+        #     middle_name=mpesa_payment['MiddleName'],
+        #     order = order,
+        #     description=mpesa_payment['TransID'],
+        #     phone_number=mpesa_payment['MSISDN'],
+        #     amount=mpesa_payment['TransAmount'],
+        #     reference=mpesa_payment['BillRefNumber'],
+        #     organization_balance=mpesa_payment['OrgAccountBalance'],
+        #     transaction_type=mpesa_payment['TransactionType'],
+        # )
+
+
+        #processing order times and saving to db
+        order_items = data['order_items']
+        print(f"order items are {order_items}")
         for item in order_items:
             print(f"items in cart are {item['product']['id']}")
             cart_product = get_object_or_404(Product, id=item['product']['id'])
             print(f'cart prod is {cart_product}')
-            cart_items = CartItem.objects.create(product=cart_product,quantities=item['quantities'],owner=self.request.user)
+            if self.request.user.is_anonymous:
+                cart_items = CartItem.objects.create(product=cart_product,quantities=item['product']['quantities'])
+            else:
+                cart_items = CartItem.objects.create(product=cart_product,quantities=item['product']['quantities'],owner=self.request.user)
             order.order_items.add(cart_items)
             order.save()
         return Response(status=status.HTTP_200_OK)

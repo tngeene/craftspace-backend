@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/v1/',include('core.apiv1.urls')),
     path('api/v1/art-pieces/',include('products.apiv1.urls')),
     path('api/v1/',include('orders.apiv1.urls')),
+    path('api/v1/',include('payments.urls')),
     path('api/v1/auth/', include('djoser.urls')),
     path('api/v1/auth/', include('djoser.urls.authtoken')),
     path('api/v1/rest-auth/', include('rest_auth.urls')),
