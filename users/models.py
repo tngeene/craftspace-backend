@@ -41,29 +41,32 @@ class UserAccount(AbstractUser):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-
-class ArtistProfile(models.Model):
-    user = models.OneToOneField(
-        UserAccount,on_delete=models.CASCADE,limit_choices_to={'membership_type': 'Artist'},related_name='artist_profile'
-    )
+class BaseProfile(models.Model):
     bio = models.TextField(blank=True)
-    photo = models.ImageField(upload_to="artists/profile_photos",null=True)
-    county = models.CharField(max_length=50)
-    birth_place = models.CharField(max_length=100)
+    county = models.CharField(max_length=50,null=True)
+    birth_place = models.CharField(max_length=100,null=True)
+    photo = models.ImageField(upload_to="users/profile_photos",null=True)
     created_on = models.DateField(auto_now_add=True)
     updated_on = models.DateField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class ArtistProfile(BaseProfile):
+    user = models.OneToOneField(
+        UserAccount,on_delete=models.CASCADE,limit_choices_to={'membership_type': 'Artist'},
+        related_name='artist_profile'
+    )
 
     def __str__(self):
         return  self.user.username
 
-class CollectorProfile(models.Model):
+class CollectorProfile(BaseProfile):
     user = models.OneToOneField(
-        UserAccount,on_delete=models.CASCADE,limit_choices_to={'membership_type': 'Collector'},related_name='collector_profile'
+        UserAccount,on_delete=models.CASCADE,limit_choices_to={'membership_type': 'Collector'},
+        related_name='collector_profile'
     )
     billing_address = models.CharField(max_length= 255,blank=True)
-    county = models.CharField(max_length=100)
-    created_on = models.DateField(auto_now_add=True)
-    updated_on = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.user.username

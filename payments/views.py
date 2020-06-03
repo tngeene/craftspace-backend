@@ -3,7 +3,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 from decouple import config
-from . mpesa_credentials import MpesaAccessToken, LipaNaMpesaPassword
+from . mpesa_credentials import MpesaAccessToken, LipaNaMpesa
 from django.views.decorators.csrf import csrf_exempt #allows mpesa to post data
 from .models import MpesaPayment
 
@@ -27,13 +27,13 @@ def lipa_na_mpesa_online(request):
     api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
     headers = {"Authorization": "Bearer %s" % access_token}
     request = {
-        "BusinessShortCode": LipaNaMpesaPassword.business_shortcode,
-        "Password": LipaNaMpesaPassword.decode_password,
-        "Timestamp": LipaNaMpesaPassword.lipa_time,
+        "BusinessShortCode": LipaNaMpesa.business_shortcode,
+        "Password": LipaNaMpesa.decode_password,
+        "Timestamp": LipaNaMpesa.lipa_time,
         "TransactionType": "CustomerPayBillOnline",
         "Amount": 1,
         "PartyA": "254708651848",  # phone number getting stk push
-        "PartyB": LipaNaMpesaPassword.business_shortcode,  #business till no.or paybill
+        "PartyB": LipaNaMpesa.business_shortcode,  #business till no.or paybill
         "PhoneNumber": "254708651848", # phone number getting stk push same as party A
         "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
         "AccountReference": "Craftspace",
@@ -49,7 +49,7 @@ def register_urls(request):
     access_token = MpesaAccessToken.validated_mpesa_access_token
     api_url = "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl"
     headers = {"Authorization": "Bearer %s" % access_token}
-    options = {"ShortCode": LipaNaMpesaPassword.test_c2b_shortcode,
+    options = {"ShortCode": LipaNaMpesa.test_c2b_shortcode,
                "ResponseType": "Completed",
                "ConfirmationURL": "https://272f96c8.ngrok.io/api/v1/c2b/confirmation",
                "ValidationURL": "https://272f96c8.ngrok.io/api/v1/c2b/validation"}

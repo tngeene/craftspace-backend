@@ -8,9 +8,13 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from orders.apiv1.serializers.order_serializers import CartSerializer, OrderSerializer, CartItemSerializer
 from ..permissions import IsCollectorOrIsAdmin
 from django.shortcuts import get_object_or_404
-from payments.mpesa_credentials import MpesaAccessToken, LipaNaMpesaPassword
+from payments.mpesa_credentials import MpesaAccessToken, LipaNaMpesa
 import json
 import requests
+
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
 
 from orders.models import Order, Cart, CartItem
 from products.models import Product
@@ -40,39 +44,38 @@ class OrderPostView(APIView):
         data = request.data
         # checks if a client is registered in the system, if not sets the client value to null
         if self.request.user.is_anonymous:
-            order = Order.objects.create(phone_number=data['phone_number'],order_total=data['order_total'])
+            order = Order.objects.create(first_name=data['first_name'],last_name=data['last_name'],
+            phone_number=data['phone_number'],order_total=data['order_total'])
         # mpesa logic
             request = {
-                "BusinessShortCode": LipaNaMpesaPassword.business_shortcode,
-                "Password": LipaNaMpesaPassword.decode_password,
-                 "Timestamp": LipaNaMpesaPassword.lipa_time,
+                "BusinessShortCode": LipaNaMpesa.business_shortcode,
+                "Password": LipaNaMpesa.decode_password,
+                 "Timestamp": LipaNaMpesa.lipa_time,
                  "TransactionType": "CustomerPayBillOnline",
                  "Amount": data['order_total'],
                  "PartyA": data['phone_number'],  # phone number getting stk push
-                 "PartyB": LipaNaMpesaPassword.business_shortcode,  #business till no.or paybill
+                 "PartyB": LipaNaMpesa.business_shortcode,  #business till no.or paybill
                  "PhoneNumber": data['phone_number'], # phone number getting stk push same as party A
                  "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
                  "AccountReference": "Craftspace",
                  "TransactionDesc": "Testing stk push"
                 }
             response = requests.post(api_url, json=request, headers=headers)
-            print(f"response is {response.text}")
-            print(f"response body is {response.body}")
-            print(f"request is {request}")
+
         else:
-            order = Order.objects.create(user=self.request.user,
-            phone_number=data['phone_number'],order_total=data['order_total'])
+            order = Order.objects.create(user=self.request.user,first_name=self.request.user.first_name,
+            last_name=self.request.user.last_name,phone_number=data['phone_number'],order_total=data['order_total'])
 
             print(f"order total {order.order_total}")
         # mpesa logic
             request = {
-                "BusinessShortCode": LipaNaMpesaPassword.business_shortcode,
-                "Password": LipaNaMpesaPassword.decode_password,
-                 "Timestamp": LipaNaMpesaPassword.lipa_time,
+                "BusinessShortCode": LipaNaMpesa.business_shortcode,
+                "Password": LipaNaMpesa.decode_password,
+                 "Timestamp": LipaNaMpesa.lipa_time,
                  "TransactionType": "CustomerPayBillOnline",
                  "Amount": data['order_total'],
                  "PartyA": data['phone_number'],  # phone number getting stk push
-                 "PartyB": LipaNaMpesaPassword.business_shortcode,  #business till no.or paybill
+                 "PartyB": LipaNaMpesa.business_shortcode,  #business till no.or paybill
                  "PhoneNumber": data['phone_number'], # phone number getting stk push same as party A
                  "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
                  "AccountReference": "Craftspace",
@@ -97,8 +100,7 @@ class OrderPostView(APIView):
         #     transaction_type=mpesa_payment['TransactionType'],
         # )
 
-
-        #processing order times and saving to db
+        #processing order items and saving to db
         order_items = data['order_items']
         print(f"order items are {order_items}")
         for item in order_items:
@@ -108,10 +110,40 @@ class OrderPostView(APIView):
             if self.request.user.is_anonymous:
                 cart_items = CartItem.objects.create(product=cart_product,quantities=item['product']['quantities'])
             else:
-                cart_items = CartItem.objects.create(product=cart_product,quantities=item['product']['quantities'],owner=self.request.user)
+                cart_items = CartItem.objects.create(product=cart_product,quantities=item['product']['quantities'],
+                owner=self.request.user)
             order.order_items.add(cart_items)
             order.save()
+            # send_checkout_email(order)
+
         return Response(status=status.HTTP_200_OK)
+
+# def send_checkout_email(self, object):
+#     current_site = get_current_site(self.request)
+
+
+#     client_subject = "Invoice for order on craftspace"
+#     client_message = render_to_string(
+#         "emails/invoice.html",
+#             {
+#                 "user": object.first_name,
+#                 "email": object.email,
+#                 "domain": current_site.domain,
+#             },
+#         )
+#     client_email = EmailMultiAlternatives(
+#                 subject, client_message, from_email="sales@craftspace.com", to=[object.email,]
+#             )
+    
+#     artist_subject = "New Order Notification"
+#     artist_message = render_to_string(
+#         "emails/receipt.html",
+#         {
+#             "user":object.
+#         },
+#     )
+#     email.content_subtype = "html"
+#     email.send()
 
 
 class CartListAPIView(generics.ListAPIView):

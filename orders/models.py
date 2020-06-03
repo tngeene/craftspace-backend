@@ -39,6 +39,9 @@ class Order(models.Model):
     status = models.CharField(max_length=15,choices=ORDER_STATUS,default='created')
 # if anyone tries to delete an entry in this look-up table, it prevents from deleting if it is tied to any records
     user = models.ForeignKey(User,on_delete=models.PROTECT,blank=True,null=True)
+    first_name = models.CharField(max_length=45,null=True)
+    last_name = models.CharField(max_length=45,null=True)
+    email = models.EmailField(null=True)
     order_items = models.ManyToManyField(CartItem)
     phone_number = models.CharField(max_length=15,null=True,blank=True)
     order_total = models.DecimalField(max_digits=50,decimal_places=2,null=True)
@@ -52,8 +55,11 @@ class Order(models.Model):
     #     self.save()
 
     def __str__(self):
-        return f"{self.status} {self.user} {self.order_total}"
-    
+        if self.user is None:
+            return f"{self.status} {self.first_name}  {self.last_name} {self.order_total}"
+        else:
+             return f"{self.status} {self.user} {self.order_total}"
+
 
 # evaluates if an order has been completed only if the status is paid
     @property

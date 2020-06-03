@@ -20,7 +20,7 @@ class MpesaAccessToken:
     validated_mpesa_access_token = mpesa_access_token['access_token']
 
 
-class LipaNaMpesaPassword:
+class LipaNaMpesa:
     lipa_time = datetime.now().strftime('%Y%m%d%H%M%S')
     business_shortcode = config('BS_SHRT_CODE')
     passkey = config('MPESA_PASSKEY')
