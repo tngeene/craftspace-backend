@@ -38,6 +38,7 @@ api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
 class OrderPostView(APIView):
     permission_classes = [AllowAny,]
 
+
     def post(self, request, **kwargs):
 
         headers = {"Authorization": "Bearer %s" % access_token} #mpesa header with access token
