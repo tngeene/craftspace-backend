@@ -15,14 +15,14 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    category = models.ForeignKey(Category,blank=True,on_delete=models.CASCADE)
+    category = models.ForeignKey(Category,blank=True,on_delete=models.CASCADE,related_name='products')
     name = models.CharField(max_length=150)
     description = models.TextField(max_length=500,default="Empty description")
     picture = models.ImageField(upload_to="art/images",null=True,blank=True)
     image = CloudinaryField('spin',null=True,blank=True)
     price = models.FloatField(default=0.00)
     quantity = models.IntegerField(default=1)
-    uploaded_by = models.ForeignKey(UserAccount,on_delete=models.CASCADE)
+    uploaded_by = models.ForeignKey(UserAccount,on_delete=models.CASCADE,related_name='products')
     created_on = models.DateTimeField(auto_now_add=True,null=True)
     updated_at = models.DateTimeField(auto_now=True,null=True)
 

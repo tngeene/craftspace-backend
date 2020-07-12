@@ -1,11 +1,19 @@
-from rest_framework.viewsets import ModelViewSet
 from django_filters import rest_framework as filters
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView, RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from products.apiv1.serializers.product_seriliazers import ProductSerializer, ProductUploadSerializer
-from products.apiv1.serializers.category_serializers import CategorySerializer
+from rest_framework.generics import (CreateAPIView, ListAPIView,
+                                     ListCreateAPIView, RetrieveAPIView,
+                                     RetrieveDestroyAPIView,
+                                     RetrieveUpdateAPIView,
+                                     RetrieveUpdateDestroyAPIView)
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
+
+from products.apiv1.serializers.category_serializers import (
+    CategoryDetailSerializer, CategorySerializer)
+from products.apiv1.serializers.product_seriliazers import (
+    ProductDetailSerializer, ProductSerializer, ProductUploadSerializer)
+from products.models import Category, Product
+
 from ..permissions import IsArtistOrDisallow
-from products.models import Product, Category
 
 # class ProductsAPIView(ModelViewSet):
 #     queryset = Product.objects.all()
@@ -18,7 +26,7 @@ from products.models import Product, Category
 #         return serializer.save(uploaded_by=user)
 
 class ProductDetailsAPIView(RetrieveAPIView):
-    serializer_class = ProductSerializer
+    serializer_class = ProductDetailSerializer
     queryset = Product.objects.all()
 
 class ProductCreateAPIView(CreateAPIView):
@@ -50,8 +58,23 @@ class ProductDestroyAPIView(RetrieveDestroyAPIView):
     permission_classes = [IsArtistOrDisallow,IsAdminUser]
 
 
-class CategoryAPIView(ModelViewSet):
+class CategoryAPIView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    http_method_name = ['get','post','head', 'put','patch',]
+    filter_backends = [filters.DjangoFilterBackend,]
+    filterset_fields = ['name']
     # permission_classes = [IsAdminUser]
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return CategoryDetailSerializer
+        return super().get_serializer_class()
+
+class CategoryDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return CategoryDetailSerializer
+        return super().get_serializer_class()
