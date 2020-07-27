@@ -18,13 +18,12 @@ class CustomUserSerializer(UserSerializer):
     # artist_profile = ArtistProfileSerializer(read_only=True)
     # collector_profile = CollectorProfileSerializer(read_only=True)
     has_profile = serializers.SerializerMethodField()
-    my_events = EventSerializer(many=True, read_only=True)
 
     """
     override djoser's user serializer to reflect AbstractUser fields
     """
     class Meta(UserSerializer.Meta):
-        fields = ('id','email','first_name','last_name','phone_number','membership_type', 'my_events','has_profile')
+        fields = ('id','email','first_name','last_name','phone_number','membership_type','is_active','has_profile')
 
     def get_has_profile(self, obj):
         if obj.membership_type == 'Artist':

@@ -1,5 +1,6 @@
 from django.urls import include, path
 
+from products.apiv1.views.mediums import MediumListCreateAPIView
 from products.apiv1.views.products import (CategoryAPIView,
                                            CategoryDetailAPIView,
                                            ProductCreateAPIView,
@@ -18,4 +19,7 @@ urlpatterns = [
     # category routes
     path('art-categories/', CategoryAPIView.as_view(),name='art_categories'),
     path('art-categories/<int:pk>', CategoryDetailAPIView.as_view(),name='art_categories_rud'),
+
+    # medium urls
+    path('mediums/',MediumListCreateAPIView.as_view(),name='medum_list_create')
 ]

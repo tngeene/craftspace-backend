@@ -51,14 +51,8 @@ class Order(models.Model):
     def is_completed(self):
         return True if self.status == "paid" else False
 
-MEDIUM_CHOICES = (
-    ('Canvas', 'Canvas'),
-    ('Wood', 'Wood'),
-    ('Soapstone', 'Soap Stone'),
-)
-
 class CustomOrder(models.Model):
-    image = models.ImageField(upload_to="custom_orders/images",blank=True,null=True)
+    picture = models.ImageField(upload_to="custom_orders/images",blank=True,null=True)
     description = models.TextField()
     size = models.TextField()
     medium = models.ForeignKey(Medium,on_delete=models.CASCADE,null=True,related_name='custom_orders')
