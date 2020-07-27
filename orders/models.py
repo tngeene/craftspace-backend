@@ -1,13 +1,14 @@
-from django.db import models
 from django.contrib.auth import get_user_model
-from products.models import Product
+from django.db import models
 from django.shortcuts import get_object_or_404
+
+from products.models import Medium, Product
 
 User = get_user_model()
 
 class CartItem(models.Model):
-    owner = models.ForeignKey(User,related_name='cart_items_owner',on_delete=models.SET_NULL,null=True,blank=True)
-    product = models.ForeignKey(Product,related_name='cart_products',on_delete=models.SET_NULL,null=True)
+    owner = models.ForeignKey(User,related_name='cart_items',on_delete=models.SET_NULL,null=True,blank=True)
+    product = models.ForeignKey(Product,related_name='cart_items',on_delete=models.SET_NULL,null=True)
     quantities = models.IntegerField(default=1)
 
     def __str__(self):
@@ -22,7 +23,7 @@ ORDER_STATUS = (
 class Order(models.Model):
     status = models.CharField(max_length=15,choices=ORDER_STATUS,default='created')
 #if anyone tries to delete an entry in this look-up table, it prevents from deleting if it is tied to any records
-    user = models.ForeignKey(User,on_delete=models.SET_NULL,blank=True,null=True)
+    user = models.ForeignKey(User,on_delete=models.SET_NULL,blank=True,null=True,related_name='orders')
     first_name = models.CharField(max_length=45,null=True)
     last_name = models.CharField(max_length=45,null=True)
     email = models.EmailField(null=True)
@@ -50,23 +51,22 @@ class Order(models.Model):
     def is_completed(self):
         return True if self.status == "paid" else False
 
-MEDIUM_CHOICES = (
-    ('Canvas', 'Canvas'),
-    ('Wood', 'Wood'),
-    ('Soapstone', 'Soap Stone'),
-)
-
 class CustomOrder(models.Model):
-    image = models.ImageField(upload_to="custom_orders/images")
+    picture = models.ImageField(upload_to="custom_orders/images",blank=True,null=True)
     description = models.TextField()
     size = models.TextField()
-    medium = models.CharField(max_length=50,choices=MEDIUM_CHOICES)
+    medium = models.ForeignKey(Medium,on_delete=models.CASCADE,null=True,related_name='custom_orders')
     due_date = models.DateField()
-    artist = models.ForeignKey(User,on_delete=models.CASCADE,related_name='custom_order_artist')
-    requested_by = models.ForeignKey(User, on_delete=models.SET_NULL,related_name='requester',null=True)
+    artist = models.ForeignKey(User,on_delete=models.CASCADE,limit_choices_to={'membership_type':'Artist'},related_name='cust_orders')
+    requested_by = models.ForeignKey(User,on_delete=models.SET_NULL,related_name='custom_orders',null=True)
     phone_number = models.CharField(max_length=20,null=True)
+    email = models.EmailField(null=True)
+    is_complete = models.BooleanField(default=False)
+    price = models.BigIntegerField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f" {self.requested_by} {self.due_date} {self.artist} "
+        if self.requested_by:
+            return f" {self.requested_by.get_full_name()} {self.due_date} {self.artist} "
+        return f"{self.due_date} {self.size}"
