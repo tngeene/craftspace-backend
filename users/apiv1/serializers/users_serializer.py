@@ -1,6 +1,6 @@
 from djoser.serializers import UserCreateSerializer,UserSerializer
 from rest_framework import serializers
-from ..serializers.artists_serializer import ArtistProfileSerializer
+from ..serializers.artists_serializer import ArtistProfileDetailSerializer
 from ..serializers.collectors_serializer import CollectorProfileSerializer
 from core.apiv1.serializers.events_serializer import EventSerializer
 from django.core.exceptions import ObjectDoesNotExist
@@ -42,7 +42,7 @@ class CustomUserSerializer(UserSerializer):
             return None
 
 class UserAccountSerializer(serializers.ModelSerializer):
-    artist_profile = ArtistProfileSerializer(read_only=True)
+    artist_profile = ArtistProfileDetailSerializer(read_only=True)
     my_events = EventSerializer(many=True, read_only=True)
     class Meta:
         fields = (

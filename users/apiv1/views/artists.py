@@ -1,19 +1,20 @@
-from rest_framework.viewsets import ModelViewSet
 from django_filters import rest_framework as filters
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
+from rest_framework.generics import (CreateAPIView, ListAPIView,
+                                     RetrieveAPIView,
+                                     RetrieveUpdateDestroyAPIView)
 from rest_framework.permissions import IsAuthenticated
-from ..permissions import IsArtistOrDissallow, IsOwnerOrReadOnly
-from users.apiv1.serializers.artists_serializer import ArtistProfileSerializer
+from rest_framework.viewsets import ModelViewSet
+
+from users.apiv1.serializers.artists_serializer import (
+    ArtistProfileCreateSerializer, ArtistProfileDetailSerializer,
+    ArtistProfileListSerializer)
 from users.models import ArtistProfile
 
-class ArtistProfileApiView(ModelViewSet):
-    queryset = ArtistProfile.objects.all()
-    serializer_class = ArtistProfileSerializer
-    http_method_names = ['get','post','options','head','put','patch',]
+from ..permissions import IsArtistOrDissallow, IsOwnerOrReadOnly
 
 
 class ArtistProfileCreateAPIView(CreateAPIView):
-    serializer_class = ArtistProfileSerializer
+    serializer_class = ArtistProfileCreateSerializer
     permission_classes = [IsArtistOrDissallow, IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -22,14 +23,15 @@ class ArtistProfileCreateAPIView(CreateAPIView):
 
 
 class ArtistProfileUpdateAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = ArtistProfileSerializer
+    serializer_class = ArtistProfileCreateSerializer
     queryset = ArtistProfile.objects.all()
 
 class ArtistProfileListAPIView(ListAPIView):
-    serializer_class = ArtistProfileSerializer
+    serializer_class = ArtistProfileListSerializer
     queryset = ArtistProfile.objects.all()
     filter_backends = [filters.DjangoFilterBackend,]
     filterset_fields = ['user',]
 
 class ArtistProfileDetailView(RetrieveAPIView):
-    serializer_class  = ArtistProfileSerializer
+    queryset = ArtistProfile.objects.all()
+    serializer_class  = ArtistProfileDetailSerializer

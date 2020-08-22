@@ -1,8 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser,UserManager
+from django.db.models import Avg
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.authtoken.models import Token as AuthToken
+
+
 
 USER_TYPE_CHOICES = (
     ('Artist', 'Artist'),
@@ -70,6 +73,20 @@ class CollectorProfile(BaseProfile):
 
     def __str__(self):
         return self.user.username
+
+class Rating(models.Model):
+    rating = models.FloatField(default=1.00)
+    comment = models.TextField(null=True, blank=True)
+    artist_profile = models.ForeignKey(ArtistProfile, related_name='ratings', on_delete=models.CASCADE, null=True, blank=True)
+    # product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    posted_by = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='ratings_posted', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        if self.posted_by:
+            return f"{self.rating} {self.artist_profile.user.get_full_name()} {self.posted_by.get_full_name()}"
+        return f"{self.rating} {self.artist_profile.user.get_full_name()} {self.posted_by.get_full_name()}"
 
 # class Token(AuthToken):
 #     auth_key = models.CharField(_('Key'), max_length=40, db_index=True, unique=True)
