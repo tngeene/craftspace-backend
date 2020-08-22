@@ -1,24 +1,27 @@
-from rest_framework import generics, status
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.status import HTTP_201_CREATED, HTTP_202_ACCEPTED
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
-from orders.apiv1.serializers.order_serializers import OrderSerializer, CartItemSerializer
-from ..permissions import IsCollectorOrIsAdmin
-from django.shortcuts import get_object_or_404
-from payments.mpesa_credentials import MpesaAccessToken, LipaNaMpesa
 import json
+
 import requests
-
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMultiAlternatives
+from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
+from rest_framework import generics, status
+from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.status import HTTP_201_CREATED, HTTP_202_ACCEPTED
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 
-from orders.models import Order, CartItem
-from products.models import Product
+from orders.apiv1.serializers.order_serializers import (CartItemSerializer,
+                                                        OrderSerializer)
+from orders.models import CartItem, Order
 from payments.models import MpesaPayment
+from payments.mpesa_credentials import LipaNaMpesa, MpesaAccessToken
+from products.models import Product
+
+from ..permissions import IsCollectorOrIsAdmin
+
 
 class CartItemView(ModelViewSet):
     queryset = CartItem.objects.all()
@@ -51,15 +54,15 @@ class OrderPostView(APIView):
             request = {
                 "BusinessShortCode": LipaNaMpesa.business_shortcode,
                 "Password": LipaNaMpesa.decode_password,
-                 "Timestamp": LipaNaMpesa.lipa_time,
-                 "TransactionType": "CustomerPayBillOnline",
-                 "Amount": data['order_total'],
-                 "PartyA": data['phone_number'],  # phone number getting stk push
-                 "PartyB": LipaNaMpesa.business_shortcode,  #business till no.or paybill
-                 "PhoneNumber": data['phone_number'], # phone number getting stk push same as party A
-                 "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
-                 "AccountReference": "Craftspace",
-                 "TransactionDesc": "Testing stk push"
+                "Timestamp": LipaNaMpesa.lipa_time,
+                "TransactionType": "CustomerPayBillOnline",
+                "Amount": data['order_total'],
+                "PartyA": data['phone_number'],  # phone number getting stk push
+                "PartyB": LipaNaMpesa.business_shortcode,  #business till no.or paybill
+                "PhoneNumber": data['phone_number'], # phone number getting stk push same as party A
+                "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
+                "AccountReference": "Craftspace",
+                "TransactionDesc": "Testing stk push"
                 }
             response = requests.post(api_url, json=request, headers=headers)
 
@@ -72,36 +75,20 @@ class OrderPostView(APIView):
             request = {
                 "BusinessShortCode": LipaNaMpesa.business_shortcode,
                 "Password": LipaNaMpesa.decode_password,
-                 "Timestamp": LipaNaMpesa.lipa_time,
-                 "TransactionType": "CustomerPayBillOnline",
-                 "Amount": data['order_total'],
-                 "PartyA": data['phone_number'],  # phone number getting stk push
-                 "PartyB": LipaNaMpesa.business_shortcode,  #business till no.or paybill
-                 "PhoneNumber": data['phone_number'], # phone number getting stk push same as party A
-                 "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
-                 "AccountReference": "Craftspace",
-                 "TransactionDesc": "Testing stk push"
+                "Timestamp": LipaNaMpesa.lipa_time,
+                "TransactionType": "CustomerPayBillOnline",
+                "Amount": data['order_total'],
+                "PartyA": data['phone_number'],  # phone number getting stk push
+                "PartyB": LipaNaMpesa.business_shortcode,  #business till no.or paybill
+                "PhoneNumber": data['phone_number'], # phone number getting stk push same as party A
+                "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
+                "AccountReference": "Craftspace",
+                "TransactionDesc": "Testing stk push"
                 }
             response = requests.post(api_url, json=request, headers=headers)
 
             print(f"response is {response}")
             print(f"response data is {response.text}")
-
-        # saving the processed order payment to db
-        # mpesa_body = request.decode('utf-8')
-        # mpesa_payment = json.loads(mpesa_body)
-        # payment = MpesaPayment.objects.create(
-        #     first_name = mpesa_payment['FirstName'],
-        #     last_name=mpesa_payment['LastName'],
-        #     middle_name=mpesa_payment['MiddleName'],
-        #     order = order,
-        #     description=mpesa_payment['TransID'],
-        #     phone_number=mpesa_payment['MSISDN'],
-        #     amount=mpesa_payment['TransAmount'],
-        #     reference=mpesa_payment['BillRefNumber'],
-        #     organization_balance=mpesa_payment['OrgAccountBalance'],
-        #     transaction_type=mpesa_payment['TransactionType'],
-        # )
 
         #processing order items and saving to db
         order_items = data['order_items']
@@ -137,7 +124,7 @@ class OrderPostView(APIView):
 #     client_email = EmailMultiAlternatives(
 #                 subject, client_message, from_email="sales@craftspace.com", to=[object.email,]
 #             )
-    
+
 #     artist_subject = "New Order Notification"
 #     artist_message = render_to_string(
 #         "emails/receipt.html",
@@ -147,6 +134,3 @@ class OrderPostView(APIView):
 #     )
 #     email.content_subtype = "html"
 #     email.send()
-
-
-
