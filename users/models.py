@@ -1,11 +1,11 @@
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser, UserManager
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Avg
-from django.contrib.auth.models import AbstractUser, UserManager
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.authtoken.models import Token as AuthToken
-
-
+from .validators import validate_rating
 
 USER_TYPE_CHOICES = (
     ('Artist', 'Artist'),
@@ -75,7 +75,7 @@ class CollectorProfile(BaseProfile):
         return self.user.username
 
 class Rating(models.Model):
-    rating = models.FloatField(default=1.00)
+    rating = models.FloatField(default=1.00, validators=[validate_rating,])
     comment = models.TextField(null=True, blank=True)
     artist_profile = models.ForeignKey(ArtistProfile, related_name='ratings', on_delete=models.CASCADE, null=True, blank=True)
     # product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
@@ -83,10 +83,19 @@ class Rating(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-id']
+
     def __str__(self):
         if self.posted_by:
             return f"{self.rating} {self.artist_profile.user.get_full_name()} {self.posted_by.get_full_name()}"
         return f"{self.rating} {self.artist_profile.user.get_full_name()} {self.posted_by.get_full_name()}"
+
+    # # make sure that the rating is below 5
+    # def save(self, *args, **kwargs):
+    #     if(self.rating > 5.0):
+    #         raise ValidationError("rating has to be below 5.0")
+    #     super().save(*args, **kwargs)
 
 # class Token(AuthToken):
 #     auth_key = models.CharField(_('Key'), max_length=40, db_index=True, unique=True)
