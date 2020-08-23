@@ -1,11 +1,13 @@
-from djoser.serializers import UserCreateSerializer,UserSerializer
-from rest_framework import serializers
-from ..serializers.artists_serializer import ArtistProfileDetailSerializer
-from ..serializers.collectors_serializer import CollectorProfileSerializer
-from core.apiv1.serializers.events_serializer import EventSerializer
 from django.core.exceptions import ObjectDoesNotExist
+from djoser.serializers import UserCreateSerializer, UserSerializer
+from rest_framework import serializers
 
+from core.apiv1.serializers.events_serializer import EventSerializer
 from users.models import UserAccount
+
+from ..serializers.artists_serializer import ArtistProfileListSerializer
+from ..serializers.collectors_serializer import CollectorProfileSerializer
+
 
 class UserRegistrationSerializer(UserCreateSerializer):
     """
@@ -42,8 +44,8 @@ class CustomUserSerializer(UserSerializer):
             return None
 
 class UserAccountSerializer(serializers.ModelSerializer):
-    artist_profile = ArtistProfileDetailSerializer(read_only=True)
-    my_events = EventSerializer(many=True, read_only=True)
+    artist_profile = ArtistProfileListSerializer(read_only=True)
+    events = EventSerializer(many=True, read_only=True)
     class Meta:
         fields = (
             'id',
@@ -54,7 +56,7 @@ class UserAccountSerializer(serializers.ModelSerializer):
             'last_name',
             'is_active',
             'artist_profile',
-            'my_events'
+            'events'
         )
         model = UserAccount
 
@@ -73,4 +75,3 @@ class UserAccountSerializer(serializers.ModelSerializer):
                     return False
             else:
                 return None
-

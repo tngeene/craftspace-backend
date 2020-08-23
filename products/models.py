@@ -1,6 +1,7 @@
 from django.db import models
+from django.db.transaction import TransactionManagementError
 from users.models import UserAccount
-
+from .validators import validate_quantities_available
 from cloudinary.models import CloudinaryField
 
 class Category(models.Model):
@@ -33,6 +34,7 @@ class Product(models.Model):
     image = CloudinaryField('spin',null=True,blank=True)
     price = models.FloatField(default=0.00)
     quantity = models.IntegerField(default=1)
+    available = models.PositiveIntegerField(default=1, validators=[validate_quantities_available,])
     uploaded_by = models.ForeignKey(UserAccount,on_delete=models.CASCADE,related_name='products')
     created_on = models.DateTimeField(auto_now_add=True,null=True)
     updated_at = models.DateTimeField(auto_now=True,null=True)
@@ -42,4 +44,7 @@ class Product(models.Model):
 
     @property
     def is_available(self):
-        return self.quantity > 0
+        if self.quantity > 0:
+            return True
+        else:
+            return False
