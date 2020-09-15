@@ -77,9 +77,9 @@ class CollectorProfile(BaseProfile):
 class Rating(models.Model):
     rating = models.FloatField(default=1.00, validators=[validate_rating,])
     comment = models.TextField(null=True, blank=True)
-    artist_profile = models.ForeignKey(ArtistProfile, related_name='ratings', on_delete=models.CASCADE, null=True, blank=True)
+    artist_profile = models.ForeignKey(ArtistProfile, related_name='ratings', on_delete=models.CASCADE)
     # product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
-    posted_by = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='ratings_posted', null=True, blank=True)
+    posted_by = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name='ratings_posted')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -87,9 +87,7 @@ class Rating(models.Model):
         ordering = ['-id']
 
     def __str__(self):
-        if self.posted_by:
-            return f"{self.rating} {self.artist_profile.user.get_full_name()} {self.posted_by.get_full_name()}"
-        return f"{self.rating} {self.artist_profile.user.get_full_name()} {self.posted_by.get_full_name()}"
+        return str(self.posted_by)
 
     # # make sure that the rating is below 5
     # def save(self, *args, **kwargs):
