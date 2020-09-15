@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'widget_tweaks',
     'cloudinary',
+    'phonenumber_field',
 
     'allauth',
     'allauth.account',
@@ -181,7 +182,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ]
 }
-
+# Phone number validator
+PHONENUMBER_DEFAULT_REGION = "KE"
 # jwt settings
 SIMPLE_JWT = {
     'JWT_ALLOW_REFRESH': True,

@@ -3,6 +3,7 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
 from core.apiv1.serializers.events_serializer import EventSerializer
+from phonenumber_field.serializerfields import PhoneNumberField
 from users.models import UserAccount
 
 from ..serializers.artists_serializer import ArtistProfileListSerializer
@@ -13,6 +14,7 @@ class UserRegistrationSerializer(UserCreateSerializer):
     """
     Overrides djoser registration behavior to accept membership type on sign up
     """
+    phone_number = PhoneNumberField()
     class Meta(UserCreateSerializer.Meta):
         fields = ('id','email','first_name','last_name','phone_number','membership_type','password',)
 
