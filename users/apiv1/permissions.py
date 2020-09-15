@@ -5,14 +5,10 @@ from rest_framework.permissions import BasePermission,SAFE_METHODS
 class IsArtistOrDissallow(BasePermission):
     message = 'Oops,you need to be an artist to update artist profile'
 
-    def has_permission(self, request, view):
-        if request.user.membership_type != 'Artist':
-            return False
-        return True
-
     def has_object_permission(self, request, view, obj):
-        if request.method in SAFE_METHODS:
-            return True
+        user = request.user
+        if request.method in SAFE_METHODS and user.membership_type != 'artist':
+            return False
         return obj.user == request.user
 
 #limit creation of collector profile to collector only
