@@ -24,8 +24,16 @@ class CollectorProfileListCreateAPIView(ListCreateAPIView):
     serializer_class = CollectorProfileSerializer
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        user = self.request.user
+        return serializer.save(user=user)
+
 
 class CollectorProfileRUDAPIView(RetrieveUpdateDestroyAPIView):
     queryset = CollectorProfile.objects.all()
     serializer_class = CollectorProfileSerializer
     permission_classes = [IsCollectorOrDissallow]
+
+    def perform_update(self, serializer):
+        user = self.request.user
+        return serializer.save(user=user)
