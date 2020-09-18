@@ -19,7 +19,7 @@ User = get_user_model()
 
 
 class ArtistListAPIView(ListAPIView):
-    queryset = User.objects.filter(membership_type='Artist').order_by('-pk')
+    queryset = User.objects.filter(membership_type='Artist', is_active=True).order_by('-pk')
     serializer_class = UserAccountSerializer
 
 
@@ -47,6 +47,10 @@ class ArtistProfileRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method == 'GET':
             return ArtistProfileDetailSerializer
         return super().get_serializer_class()
+
+    def perform_update(self, serializer):
+        user = self.request.user
+        return serializer.save(user=user)
 
 # post a rating for an artist profile
 class RatingPostAPIView(APIView):
