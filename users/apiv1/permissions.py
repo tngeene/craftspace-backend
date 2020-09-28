@@ -15,15 +15,18 @@ class IsArtistOrDissallow(BasePermission):
 
 class IsCollectorOrDissallow(BasePermission):
     message = 'Oops, You need to be a collector to perform this action'
+
     def has_permission(self, request, view):
-        if request.user.membership_type != 'Collector':
+        if request.user.membership_type != 'Collector' or request.user.is_staff:
             return False
         return True
     def has_object_permission(self, request, view, obj):
+        user = request.user
         if request.method in SAFE_METHODS:
             return True
-        return obj.user == request.user
-    
+        print((obj.user == request.user) and user.is_staff)
+        return (obj.user == request.user) or user.is_staff
+
     #custom permission to allow only owner to edit the resource
 class IsOwnerOrReadOnly(BasePermission):
     message = 'Oops, You need to be the owner to update the profile'
