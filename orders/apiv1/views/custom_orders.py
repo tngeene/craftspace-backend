@@ -1,12 +1,14 @@
 from rest_framework.generics import (ListCreateAPIView,
                                      RetrieveUpdateDestroyAPIView)
-
+from django_filters import rest_framework as filters
 from orders.apiv1.serializers.custom_orders import (
     CustomOrderCreateSerializer, CustomOrderDetailSerializer)
 
 from ...models import CustomOrder
 
-class CustomOrderListCreateAPIVIew(ListCreateAPIView):
+class CustomOrderListCreateAPIView(ListCreateAPIView):
+    filter_backends = [filters.DjangoFilterBackend,]
+    filterset_fields = ['requested_by', 'artist']
     queryset = CustomOrder.objects.all()
     serializer_class = CustomOrderCreateSerializer
 
