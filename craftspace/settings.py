@@ -137,6 +137,13 @@ MEDIA_ROOT = 'media'
 # EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 # EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
+# mpesa constants
+CONSUMER_KEY = config('CONSUMER_KEY')
+CONSUMER_SECRET = config('CONSUMER_SECRET')
+BS_SHRT_CODE = config('BS_SHORT_CODE')
+MPESA_PASSKEY =  config('MPESA_PASSKEY')
+TEST_C2B_SHORT_CODE = config('TEST_C2B_SHORT_CODE')
+
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
     'SERIALIZERS':{
