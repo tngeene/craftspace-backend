@@ -29,7 +29,7 @@ the project directory.
 
 7. A local ```dbsqlite``` file will be generate at the root of the project.
 8. Create a superuser by running the ``python manage.py createsuperuser`` and fill in the details.
-9. After creating superuser run ``python manage.py runserver`` open the browser and run  ``127.0.0.1:8000`` , login with the credentials created.
+9. After creating superuser run ``python manage.py runserver`` open the browser and run  ``127.0.0.1:8000/admin`` , login with the credentials created.
 10. For details of how to get started with django, check out [this link](https://www.djangoproject.com/start/)
 11. In order to work with a virtual environment, check out [this link](https://tutorial.djangogirls.org/en/installation/#pythonanywhere)
 
