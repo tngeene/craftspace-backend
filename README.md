@@ -1,6 +1,6 @@
 # craftspace-backend
 
-Online art gallery powered by django and vue.js
+Online art ordering system powered by django and vue.js
 
 ## Requirements
 
