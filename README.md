@@ -19,13 +19,11 @@ you can find generate the key from [here](https://djecrety.ir/)
 more information on how to set up a virtual environment, check the instructions on [this link](https://tutorial.djangogirls.org/en/django_installation/). Install the required libraries by running the commands below, by changing to
 the project directory.
 
-    pip install -r requirements.txt
+        pip install -r requirements.txt
 
 6. After installation, run the following command:
 
-    ``` python
-    python manage.py migrate
-    ```
+        python manage.py migrate
 
 7. A local ```dbsqlite``` file will be generate at the root of the project.
 8. Create a superuser by running the ``python manage.py createsuperuser`` and fill in the details.
@@ -37,29 +35,21 @@ the project directory.
 
 To run locally:
 
-```bash
-python manage.py runserver
-```
+    python manage.py runserver
 
 ## Development
 
 Pull the latest master version:
 
-```bash
-git pull origin master
-```
+    git pull origin master
 
 Create local development branch and switch to it:
 
-```bash
-git branch dev
-git checkout dev
-```
+    git branch dev
+    git checkout dev
 
 Make desired changes then commit the branch.
 
-```bash
-git add .
-git commit -m "changes to dev branch"
-git push origin dev
-```
+    git add .
+    git commit -m "changes to dev branch"
+    git push origin dev
