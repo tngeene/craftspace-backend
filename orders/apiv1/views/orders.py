@@ -66,6 +66,13 @@ class OrderPostView(APIView):
                 }
             response = requests.post(api_url, json=request, headers=headers)
 
+            if response.status_code == 200:
+                return Response(status=status.HTTP_200_OK)
+            elif response.status_code == 500:
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
         else:
             order = Order.objects.create(user=self.request.user,first_name=self.request.user.first_name,
             last_name=self.request.user.last_name,phone_number=data['phone_number'],order_total=data['order_total'])
@@ -87,12 +94,18 @@ class OrderPostView(APIView):
                 }
             response = requests.post(api_url, json=request, headers=headers)
 
-            print(f"response is {response}")
+            print(f"response is {response.status_code}")
             print(f"response data is {response.text}")
+
+            if response.status_code == 200:
+                return Response(status=status.HTTP_200_OK)
+            elif response.status_code == 500:
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
 
         #processing order items and saving to db
         order_items = data['order_items']
-        print(f"order items are {order_items}")
         for item in order_items:
             print(f"items in cart are {item['product']['id']}")
             cart_product = get_object_or_404(Product, id=item['product']['id'])
