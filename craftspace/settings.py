@@ -55,6 +55,10 @@ INSTALLED_APPS = [
 
 SITE_ID =1
 
+# force secure https protocol in production environment
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -129,13 +133,11 @@ STATIC_ROOT = 'static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media'
-# uncomment to use sendgrid
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = config('EMAIL_HOST')
-# EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-# EMAIL_PORT = config('EMAIL_PORT')
-# EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard:index'
+LOGOUT_URL = 'dashboard_logout'
+LOGOUT_REDIRECT_URL = 'login'
 
 # mpesa constants
 CONSUMER_KEY = config('CONSUMER_KEY')

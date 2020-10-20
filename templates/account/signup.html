@@ -6,7 +6,7 @@
     <h4 class="text-center">Sign Up</h4>
     <form method="post">
         {% csrf_token %}
-        {% include 'partials/form.html' %}
+        {% include 'dashboard/partials/form.html' %}
         <div class="clearfix py-3">
             <p class="float-left">Already have an account? <a href="{% url 'account_login' %}">Sign In</a></p>
             <button class="btn btn-primary float-right" type="submit">Sign Up</button>

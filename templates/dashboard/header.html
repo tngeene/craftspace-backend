@@ -23,7 +23,7 @@
             <i class="fa fa-user"></i> {{ request.user.get_full_name }}
         </li>
         <li class="nav-item sm-device-none">
-            {% comment %} <a href="{% url 'logout' %}"> {% endcomment %}
+            <a href="{% url 'dashboard_logout' %}">
                 <i class="fa fa-sign-out"></i> Logout
             </a>
         </li>
