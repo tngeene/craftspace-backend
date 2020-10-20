@@ -145,21 +145,13 @@ MPESA_PASSKEY =  config('MPESA_PASSKEY')
 TEST_C2B_SHORT_CODE = config('TEST_C2B_SHORT_CODE')
 
 DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    "PASSWORD_RESET_CONFIRM_URL": "auth/password/reset/{uid}/{token}",
     'SERIALIZERS':{
         'user_create': 'users.apiv1.serializers.users_serializer.UserRegistrationSerializer',
         'user': 'users.apiv1.serializers.users_serializer.CustomUserSerializer',
         'current_user': 'users.apiv1.serializers.users_serializer.CustomUserSerializer',
     },
     'LOGIN_FIELD': 'email',
-    # 'SEND_ACTIVATION_EMAIL': True,
-    # 'SEND_CONFIRMATION_EMAIL': True,
-    # 'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
-    # 'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
-    # 'LOGOUT_ON_PASSWORD_CHANGE': True,
-    # 'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
-    # 'TOKEN_MODEL': 'users.models.Token',
-    # 'ACTIVATION_URL': 'auth/activate/{uid}/{token}',
 }
 cloudinary.config(
     cloud_name='drk0kubip',
@@ -197,3 +189,10 @@ SIMPLE_JWT = {
     'JWT_EXPIRATION_DELTA': timedelta(hours=1),
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
 }
+
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST=config('EMAIL_HOST')
+EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT=config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = True
