@@ -185,6 +185,8 @@ REST_FRAMEWORK = {
 }
 # Phone number validator
 PHONENUMBER_DEFAULT_REGION = "KE"
+PHONENUMBER_DB_FORMAT = "NATIONAL"
+
 # jwt settings
 SIMPLE_JWT = {
     'JWT_ALLOW_REFRESH': True,

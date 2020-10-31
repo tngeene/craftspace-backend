@@ -4225,9 +4225,12 @@ bs reset
 .badge-pink {
     background: #ec0080 !important;
 }
-
+.bg-light-red,
+.badge-light-red {
+    background: #f7797d;
+}
 .bg-gray {
-    background: #efefef !important;
+    background: #203A43 !important;
 }
 
 .text-primary {
