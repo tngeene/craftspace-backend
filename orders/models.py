@@ -16,12 +16,12 @@ class CartItem(models.Model):
 
 
 ORDER_STATUS = (
-    ('placed', 'Placed'),
-    ('paid', 'Paid'),
+    ('placed', 'placed'),
+    ('paid', 'paid'),
 )
 
 class Order(models.Model):
-    status = models.CharField(max_length=15,choices=ORDER_STATUS,default='created')
+    status = models.CharField(max_length=15,choices=ORDER_STATUS,default='placed')
 #if anyone tries to delete an entry in this look-up table, it prevents from deleting if it is tied to any records
     user = models.ForeignKey(User,on_delete=models.SET_NULL,blank=True,null=True,related_name='orders')
     first_name = models.CharField(max_length=45,null=True)

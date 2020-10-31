@@ -9,7 +9,6 @@ from rest_framework import generics, status
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_202_ACCEPTED
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
@@ -25,31 +24,34 @@ from ..permissions import IsCollectorOrIsAdmin
 
 class CartItemView(ModelViewSet):
     queryset = CartItem.objects.all()
-    serializer_class  = CartItemSerializer
+    serializer_class = CartItemSerializer
+
 
 class OrderAPIView(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     # GET for admin, POST for collectors
-    permission_classes = [IsAuthenticated,IsCollectorOrIsAdmin,]
+    permission_classes = [IsAuthenticated, IsCollectorOrIsAdmin, ]
 
 
 # mpesa variables
 access_token = MpesaAccessToken.validated_mpesa_access_token
 # print(f"access token is {access_token}")
 api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-class OrderPostView(APIView):
-    permission_classes = [AllowAny,]
 
+
+class OrderPostView(APIView):
+    permission_classes = [AllowAny, ]
 
     def post(self, request, **kwargs):
 
-        headers = {"Authorization": "Bearer %s" % access_token} #mpesa header with access token
+        headers = {"Authorization": "Bearer %s" %
+                   access_token}  # mpesa header with access token
         data = request.data
         # checks if a client is registered in the system, if not sets the client value to null
         if self.request.user.is_anonymous:
-            order = Order.objects.create(first_name=data['first_name'],last_name=data['last_name'],
-            phone_number=data['phone_number'],order_total=data['order_total'])
+            order = Order.objects.create(first_name=data['first_name'], last_name=data['last_name'], email=data['email'],
+                                         phone_number=data['phone_number'], order_total=data['order_total'])
         # mpesa logic
             request = {
                 "BusinessShortCode": LipaNaMpesa.business_shortcode,
@@ -57,25 +59,20 @@ class OrderPostView(APIView):
                 "Timestamp": LipaNaMpesa.lipa_time,
                 "TransactionType": "CustomerPayBillOnline",
                 "Amount": data['order_total'],
-                "PartyA": data['phone_number'],  # phone number getting stk push
-                "PartyB": LipaNaMpesa.business_shortcode,  #business till no.or paybill
-                "PhoneNumber": data['phone_number'], # phone number getting stk push same as party A
+                # phone number getting stk push
+                "PartyA": data['phone_number'],
+                "PartyB": LipaNaMpesa.business_shortcode,  # business till no.or paybill
+                # phone number getting stk push same as party A
+                "PhoneNumber": data['phone_number'],
                 "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
                 "AccountReference": "Craftspace",
                 "TransactionDesc": "Testing stk push"
-                }
+            }
             response = requests.post(api_url, json=request, headers=headers)
 
-            if response.status_code == 200:
-                return Response(status=status.HTTP_200_OK)
-            elif response.status_code == 500:
-                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            else:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-
         else:
-            order = Order.objects.create(user=self.request.user,first_name=self.request.user.first_name,
-            last_name=self.request.user.last_name,phone_number=data['phone_number'],order_total=data['order_total'])
+            order = Order.objects.create(user=self.request.user, first_name=self.request.user.first_name,
+                                         last_name=self.request.user.last_name, email=self.request.user.email, phone_number=data['phone_number'], order_total=data['order_total'])
 
             print(f"order total {order.order_total}")
         # mpesa logic
@@ -85,13 +82,15 @@ class OrderPostView(APIView):
                 "Timestamp": LipaNaMpesa.lipa_time,
                 "TransactionType": "CustomerPayBillOnline",
                 "Amount": data['order_total'],
-                "PartyA": data['phone_number'],  # phone number getting stk push
-                "PartyB": LipaNaMpesa.business_shortcode,  #business till no.or paybill
-                "PhoneNumber": data['phone_number'], # phone number getting stk push same as party A
+                # phone number getting stk push
+                "PartyA": data['phone_number'],
+                "PartyB": LipaNaMpesa.business_shortcode,  # business till no.or paybill
+                # phone number getting stk push same as party A
+                "PhoneNumber": data['phone_number'],
                 "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
                 "AccountReference": "Craftspace",
                 "TransactionDesc": "Testing stk push"
-                }
+            }
             response = requests.post(api_url, json=request, headers=headers)
 
             print(f"response is {response.status_code}")
@@ -104,17 +103,18 @@ class OrderPostView(APIView):
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        #processing order items and saving to db
+        # processing order items and saving to db
         order_items = data['order_items']
         for item in order_items:
             print(f"items in cart are {item['product']['id']}")
             cart_product = get_object_or_404(Product, id=item['product']['id'])
             print(f'cart prod is {cart_product}')
             if self.request.user.is_anonymous:
-                cart_items = CartItem.objects.create(product=cart_product,quantities=item['product']['quantities'])
+                cart_items = CartItem.objects.create(
+                    product=cart_product, quantities=item['product']['quantities'])
             else:
-                cart_items = CartItem.objects.create(product=cart_product,quantities=item['product']['quantities'],
-                owner=self.request.user)
+                cart_items = CartItem.objects.create(product=cart_product, quantities=item['product']['quantities'],
+                                                     owner=self.request.user)
             order.order_items.add(cart_items)
             order.save()
             # send_checkout_email(order)

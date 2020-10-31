@@ -1,5 +1,5 @@
 {% extends 'dashboard/base.html' %}
-{% load static %}
+
 {% block content %}
 <div class="row">
     <div class="col-xl-3 col-sm-6">
@@ -7,7 +7,7 @@
             <div class="card-body">
                 <div class="media d-flex align-items-center ">
                     <div class="mr-4 rounded-circle bg-white sr-icon-box text-purple">
-                        <i class="vl_smart-watch"></i>
+                        <i class="vl_user-female"></i>
                     </div>
                     <div class="media-body text-light">
                         <h4 class="text-uppercase mb-0 weight500">{{  artists_count }}</h4>
@@ -18,11 +18,11 @@
         </div>
     </div>
     <div class="col-xl-3 col-sm-6">
-        <div class="card mb-4 bg-purple">
+        <div class="card mb-4 bg-turquoise">
             <div class="card-body">
                 <div class="media d-flex align-items-center ">
                     <div class="mr-4 rounded-circle bg-white sr-icon-box text-purple">
-                        <i class="vl_shopping-bag2"></i>
+                        <i class="vl_user-male"></i>
                     </div>
                     <div class="media-body text-light">
                         <h4 class="text-uppercase mb-0 weight500">  {{ collectors_count }} </h4>
@@ -33,15 +33,30 @@
         </div>
     </div>
     <div class="col-xl-3 col-sm-6">
-        <div class="card mb-4 bg-primary">
+        <div class="card mb-4 bg-pink">
             <div class="card-body">
                 <div class="media d-flex align-items-center">
                     <div class="mr-4 rounded-circle bg-white  sr-icon-box text-primary">
-                        <i class="vl_graph-bar"></i>
+                        <i class="vl_cart-full"></i>
                     </div>
                     <div class="media-body text-white">
-                        <h4 class="text-uppercase mb-0 weight500">900000</h4>
-                        <span>Sales</span>
+                        <h4 class="text-uppercase mb-0 weight500">{{ orders_count }}</h4>
+                        <span>Orders</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+        <div class="card mb-4 bg-light-red">
+            <div class="card-body">
+                <div class="media d-flex align-items-center">
+                    <div class="mr-4 rounded-circle bg-white  sr-icon-box text-primary">
+                        <i class="vl_cart-empty"></i>
+                    </div>
+                    <div class="media-body text-white">
+                        <h4 class="text-uppercase mb-0 weight500">{{ custom_orders_count }}</h4>
+                        <span>Custom Orders</span>
                     </div>
                 </div>
             </div>
@@ -52,10 +67,10 @@
             <div class="card-body">
                 <div class="media d-flex align-items-center">
                     <div class="mr-4 rounded-circle bg-white sr-icon-box text-danger">
-                        <i class="vl_shopping-bag3"></i>
+                        <i class="vl_pen-paper"></i>
                     </div>
                     <div class="media-body text-white">
-                        <h4 class="text-uppercase mb-0 weight500">80</h4>
+                        <h4 class="text-uppercase mb-0 weight500">{{ products_count }}</h4>
                         <span>Art Pieces</span>
                     </div>
                 </div>
@@ -68,7 +83,7 @@
             <div class="card-body">
                 <div class="media d-flex align-items-center">
                     <div class="mr-4 rounded-circle bg-white sr-icon-box text-success">
-                        <i class="vl_user-male"></i>
+                        <i class="vl_calendar"></i>
                     </div>
                     <div class="media-body text-white">
                         <h4 class="text-uppercase mb-0 weight500"> {{ events_count }} </h4>
@@ -79,7 +94,7 @@
         </div>
         </div>
     <div class="col-xl-3 col-sm-6">
-        <div class="card mb-4 bg-success">
+        <div class="card mb-4 bg-gray">
             <div class="card-body">
                 <div class="media d-flex align-items-center">
                     <div class="mr-4 rounded-circle bg-white sr-icon-box text-success">
@@ -94,12 +109,10 @@
         </div>
     </div>
 </div>
-</div>
-
 
 <div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
+  <div class="col-md-12">
+    <div class="card shadow-sm">
             <div class="card-body">
                 <h3 class="text-center py-3">Recently Registered Artists </h3>
 
@@ -130,7 +143,7 @@
                             </tr>
                             {% empty %}
                             <tr class="text-center">
-                                <td colspan="5">No Registered Artists Yet.</td>
+                                <td colspan="5">No Artists Registered Yet.</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -139,12 +152,12 @@
 
             </div>
         </div>
-    </div>
+  </div>
 </div>
 
 <div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
+  <div class="col-md-12">
+            <div class="card shadow-sm">
             <div class="card-body">
                 <h3 class="text-center py-3">Recently Registered Collectors </h3>
                 <div class="table-responsive">
@@ -172,7 +185,7 @@
                             </tr>
                             {% empty %}
                             <tr class="text-center">
-                                <td colspan="5">No Registered Collectors Yet.</td>
+                                <td colspan="5">No Collectors Registered Yet.</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -180,12 +193,66 @@
                 </div>
             </div>
         </div>
-    </div>
+  </div>
+</div>
+
+
+<div class="row mb-4">
+  <div class="col-md-12">
+    <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center py-3">Recently Uploaded Art Pieces </h3>
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Has 3D</th>
+                                <th>Uploaded By</th>
+                                <th>Uploaded On</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for product in recent_products %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.category.name }}</td>
+                                <td>{{ product.description|truncatechars:50 }} </td>
+                                {% if product.spin_image %}
+                                <td> <span class="badge badge-pill badge-success">Yes</span> </td>
+                                {% else %}
+                                <td> <span class="badge badge-pill badge-info">No</span> </td>
+                                {% endif %}
+                                <td>{{ product.uploaded_by.get_full_name }} </td>
+                                <td>{{ product.created_on }} </td>
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr class="text-center">
+                                <td colspan="5">No Art Pieces Uploaded Yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+  </div>
 </div>
 
 <div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
+  <div class="col-md-12">
+    <div class="card shadow-sm">
             <div class="card-body">
                 <h3 class="text-center py-3">Recently Uploaded Exhibitions </h3>
 
@@ -204,7 +271,7 @@
                             {% for event in recent_events %}
                             <tr>
                                 <td>{{ event.name }}</td>
-                                <td> {{ event.description }} </td>
+                                <td> {{ event.description|truncatechars:50 }} </td>
                                 <td> {{ event.uploaded_by.get_full_name }} </td>
                                 <td>
                                     <a href="#">
@@ -223,110 +290,11 @@
 
             </div>
         </div>
-    </div>
+  </div>
 </div>
 
 <div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h3 class="text-center py-3">Recently Added Art Pieces</h3>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Sku</th>
-                                <th>Category</th>
-                                <th>Units</th>
-                                <th>Price</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        {% comment %} <tbody>
-
-                            <tr>
-                                <td>LG plasma 4K tv</td>
-                                <td>#4838</td>
-                                <td>Electronics</td>
-                                <td>67</td>
-                                <td>70000</td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>LG plasma 4K tv</td>
-                                <td>#4838</td>
-                                <td>Electronics</td>
-                                <td>67</td>
-                                <td>70000</td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>LG plasma 4K tv</td>
-                                <td>#4838</td>
-                                <td>Electronics</td>
-                                <td>67</td>
-                                <td>70000</td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>LG plasma 4K tv</td>
-                                <td>#4838</td>
-                                <td>Electronics</td>
-                                <td>67</td>
-                                <td>70000</td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>LG plasma 4K tv</td>
-                                <td>#4838</td>
-                                <td>Electronics</td>
-                                <td>67</td>
-                                <td>70000</td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>LG plasma 4K tv</td>
-                                <td>#4838</td>
-                                <td>Electronics</td>
-                                <td>67</td>
-                                <td>70000</td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% comment %} </tbody> {% endcomment %}
-                    </table> 
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row mb-4">
-    <div class="col-md-12">
+  <div class="col-md-12">
         <div class="card shadow-sm">
             <div class="card-body">
                 <h3 class="text-center py-3">Recently Placed Orders</h3>
@@ -335,67 +303,38 @@
                         <thead>
                             <tr>
                                 <th>Order No.</th>
-                                <th>Product</th>
-                                <th>Collector</th>
-                                <th>Quantity</th>
+                                <th>No. of Pieces</th>
+                                <th>Ordered By</th>
+                                <th>Email</th>
                                 <th>Total Price</th>
                                 <th>Order Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>458</td>
-                                <td>the mural</td>
-                                <td>John Mwelusi</td>
-                                <td>5</td>
-                                <td>Ksh 400,000</td>
-                                <td> <span class="badge badge-pill badge-info">Pending </span> </td>
+                        {% for order in  recent_orders %}
+                        <tr>
+                                <td> {{ order.id }} </td>
+                                <td>{{order.order_items.all.count}}</td>
+                                {% if order.user %}
+                                <td>{{ order.user.get_full_name }}</td>
+                                {% elif order.first_name or order_last_name %}
+                                <td>{{ order.first_name}} {{ order.last_name}}</td>
+                                {% endif %}
+                                <td>{{ order.email }}</td>
+                                <td>{{ order.order_total }}</td>
+                                {% if order.status  == 'placed' %}
+                                <td> <span class="badge badge-pill badge-info">Pending Payment</span> </td>
+                                {% elif order.status == 'paid' %}
+                                <td> <span class="badge badge-pill badge-success">Paid</span> </td>
+                                {% endif %}
                                 <td>
                                     <a href="#">
                                         <button class="btn btn-primary btn-sm">View</button>
                                     </a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>458</td>
-                                <td>the mural</td>
-                                <td>John Mwelusi</td>
-                                <td>5</td>
-                                <td>Ksh 400,000</td>
-                                <td> <span class="badge badge-pill badge-success">Complete </span> </td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>458</td>
-                                <td>the mural</td>
-                                <td>John Mwelusi</td>
-                                <td>5</td>
-                                <td>Ksh 400,000</td>
-                                <td> <span class="badge badge-pill badge-warning">Pending </span> </td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>458</td>
-                                <td>the mural</td>
-                                <td>John Mwelusi</td>
-                                <td>5</td>
-                                <td>Ksh 400,000</td>
-                                <td> <span class="badge badge-pill badge-danger"> Failed </span> </td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -405,5 +344,58 @@
     </div>
 </div>
 
-
+<div class="row mb-4">
+  <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center py-3">Recently Placed Custom Orders</h3>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Requested By</th>
+                                <th>Email</th>
+                                <th>Artist</th>
+                                <th>Order Status</th>
+                                <th>Due Date</th>
+                                <th>Placed On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in  recent_custom_orders %}
+                        <tr>
+                                <td> {{ order.description|truncatechars:50 }} </td>
+                                <td>{{ order.requested_by.get_full_name }}</td>
+                                <td> {{order.email}} </td>
+                                <td>{{ order.artist.get_full_name }}</td>
+                                {% if order.is_complete %}
+                                <td> <span class="badge badge-pill badge-success">Done</span> </td>
+                                {% else %}
+                                <td> <span class="badge badge-pill badge-warning">Pending Completion</span> </td>
+                                {% endif %}
+                                <td>{{ order.due_date }}</td>
+                                <td>{{ order.created_on }}</td>
+                                <td>{{ order.order_total }}</td>
+                                {% if order.status  == 'placed' %}
+                                <td> <span class="badge badge-pill badge-info">Pending Payment</span> </td>
+                                {% elif order.status == 'paid' %}
+                                <td> <span class="badge badge-pill badge-success">Paid</span> </td>
+                                {% endif %}
+                                <td>
+                                    <a href="#">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</div>
 {% endblock %}
