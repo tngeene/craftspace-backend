@@ -16,6 +16,7 @@ class Event(models.Model):
     venue = models.CharField(null=True,max_length=255)
     ticket_price = models.FloatField(default=0.00, null=True)
     uploaded_by = models.ForeignKey(UserAccount,related_name='events',on_delete=models.CASCADE)
+    is_approved = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

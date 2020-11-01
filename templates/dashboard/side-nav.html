@@ -59,6 +59,17 @@
                     </ul>
                 </li>
                 <li class="sub-menu">
+                    <a href="#" class="{% if '/events/' in request.path %}active{% endif %}">
+                        <i class="ti-calendar"></i>
+                        <span>Events</span>
+                    </a>
+                    <ul class="sub">
+                        <li class="{% if request.path == 'dashboard/events/' %}active{% endif %}">
+                            <a href="{% url 'dashboard:event_list' %}">All Events</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
                     <a href="#" class="{% if 'users' in request.path %}active{% endif %}">
                         <i class="ti-settings"></i>
                         <span> Settings </span>

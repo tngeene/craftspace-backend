@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView
 from .dashboard import DashboardView
 from django.contrib.auth import get_user_model
-
+from core.models import Event
 User = get_user_model()
 
 # view for confirming user suspension
@@ -45,5 +45,21 @@ def activate_user(request,pk):
         messages.success(request,"Account activated")
         return redirect("dashboard:collector_details", pk=pk)
 
+# event approve or reject
+def approve_event(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    event.is_approved = True
+    event.save()
+
+    messages.success(request, "Event Approved")
+    return redirect("dashboard:event_details", pk=pk)
+
+def reject_event(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    event.is_approved = not event.is_approved
+    event.save()
+
+    messages.success(request, "Event Rejected")
+    return redirect("dashboard:event_details", pk=pk)
 
 

@@ -1,0 +1,133 @@
+{% extends 'dashboard/base.html' %} {% load static %} {% block title %} Event Details
+{% endblock %} {% block styles %}
+<link
+  href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}"
+  rel="stylesheet"
+/>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4 p-3 text-center">
+            <div class="py-3">
+              {% if event.banner %}
+              <img
+                src="{{ event.banner.url }}"
+                alt=" craftspace {{ event.name }}"
+                class="w-50"
+              />
+              {% else %}
+              <img
+                src="{% static 'dashboard/img/event_icon.png' %}"
+                alt="craftspace {{ event.name }}"
+                class="w-50"
+              />
+              {% endif %}
+              <p>
+                <a href="{% url 'dashboard:event_edit' event.pk %}" class="mx-1">
+                  <button class="btn btn-primary mt-3">Edit</button>
+                </a>
+              </p> 
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="m-3 p-3 shadow-sm">
+              <h3 class="text-center py-3">Event Details</h3>
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <td>{{ event.name }}</td>
+                    </tr>
+                    <tr>
+                      <th>Venue</th>
+                      <td>{{ event.venue }}</td>
+                    </tr>
+                    <tr>
+                      <th>Date</th>
+                      <td>{{ event.date }}</td>
+                    </tr>
+                    <tr>
+                      <th>Time</th>
+                      <td>{{ event.time }}</td>
+                    </tr>
+                    <tr>
+                      <th>Ticket Price</th>
+                      {% if event.ticket_price %}
+                      <td>Ksh {{ event.ticket_price }}</td>
+                      {% else %}
+                      <td><span class="badge badge-pill badge-info"
+                          >Free</span
+                        ></td>
+                      {% endif %}
+                    </tr>
+                    <tr>
+                      <th>Uploaded On</th>
+                      <td>{{ event.created_on }} </td>
+                    </tr>
+                    <tr>
+                      <th>Uploaded By</th>
+                      <td> {{ event.uploaded_by }} </td>
+                    </tr>
+                    <tr>
+                      <th>About</th>
+                      <td>{{ event.description }}</td>
+                    </tr>
+
+                    <tr>
+                      <th>Status</th>
+                      <td>
+                        {% if event.is_approved %}
+                        <span class="badge badge-pill badge-success"
+                          >Approved</span
+                        >
+                        {% else %}
+                        <span class="badge badge-pill badge-danger"
+                          >Rejected</span
+                        >
+                        {% endif %}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="text-center py-3">
+                   {% if event.is_approved %}
+                   <a
+                    href="{% url 'dashboard:event_reject_action' event.pk %}"
+                    class="mx-1"
+                  >
+                    <button class="btn btn-warning btn-md w-50">Reject</button>
+                  </a>
+                  {% else %}
+                  <a
+                    href="{% url 'dashboard:event_approve_action' event.pk %}"
+                    class="mx-1"
+                  >
+                    <button class="btn btn-success btn-md w-50">
+                      Approve
+                    </button>
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+    <script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
+    <!--init datatable-->
+    <script src="{% static 'dashboard/vendor/js-init/init-datatable.js' %}"></script>
+<script>
+  $("#data-table").DataTable();
+</script>
+{% endblock %}

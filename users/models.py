@@ -63,7 +63,7 @@ class BaseProfile(models.Model):
 
 class ArtistProfile(BaseProfile):
     user = models.OneToOneField(
-        UserAccount,on_delete=models.CASCADE,limit_choices_to={'membership_type': 'Artist'},
+        UserAccount,on_delete=models.CASCADE, limit_choices_to={'membership_type': 'Artist'},
         related_name='artist_profile'
     )
 
@@ -72,7 +72,7 @@ class ArtistProfile(BaseProfile):
 
 class CollectorProfile(BaseProfile):
     user = models.OneToOneField(
-        UserAccount,on_delete=models.CASCADE,limit_choices_to={'membership_type': 'Collector'},
+        UserAccount,on_delete=models.CASCADE, limit_choices_to={'membership_type': 'Collector'},
         related_name='collector_profile'
     )
     billing_address = models.CharField(max_length= 255,blank=True)

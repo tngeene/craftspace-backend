@@ -274,7 +274,7 @@
                                 <td> {{ event.description|truncatechars:50 }} </td>
                                 <td> {{ event.uploaded_by.get_full_name }} </td>
                                 <td>
-                                    <a href="#">
+                                    <a href="{% url 'dashboard:event_details' event.pk %}">
                                         <button class="btn btn-primary btn-sm">View</button>
                                     </a>
                                 </td>

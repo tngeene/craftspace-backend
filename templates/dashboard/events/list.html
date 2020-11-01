@@ -1,0 +1,72 @@
+{% extends 'dashboard/base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}
+All Events/Exhibitions
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center py-3">All Events/Exhibitions</h3>
+                <div class="float-right mb-2">
+                    <a href="{% url 'dashboard:event_create' %}">
+                        <button class="btn btn-primary btn-sm">Add New Event</button>
+                    </a>
+                </div>
+                <table class="table table-striped py-3" id="data_table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Venue</th>
+                            <th>Uploaded By</th>
+                            <th>Status</th>
+                            <th>Added</th>
+                            <th>Action</th>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                        <tr>
+                            <td>{{ event.name }} </td>
+                            <td> {{ event.description|truncatechars:30 }}</td>
+                            <td> {{ event.venue|truncatechars:30 }}</td>
+                            <td>{{ event.uploaded_by.get_full_name }}</td>
+                            <td> {{ event.created_on }}</td>
+                            {% if event.is_approved %}
+                            <td>
+                                <span class="badge badge-pill badge-success">Approved</span>
+                            </td>
+                            {% else %}
+                            <td>
+                                <span class="badge badge-pill badge-danger">Rejected</span>
+                            </td>
+                            {% endif %}
+                            <td>
+                                <a href="{% url 'dashboard:event_details' event.pk %}">
+                                    <button class="btn btn-primary btn-sm">View</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
+<!--init datatable-->
+<script src="{% static 'dashboard/vendor/js-init/init-datatable.js' %}"></script>
+{% endblock %}
