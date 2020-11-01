@@ -11,7 +11,7 @@ urlpatterns = [
     path('auth/logout',
          LogoutView.as_view(template_name='account/login.html'), name='dashboard_logout'),
     path('', LoginView.as_view(template_name='account/login.html', redirect_authenticated_user=True),
-         name='login'),
+         name='dashboard_login'),
 
     # API urls
     path('api/v1/',include('users.urls')),

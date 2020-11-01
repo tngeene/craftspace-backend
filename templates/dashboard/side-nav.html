@@ -43,22 +43,21 @@
                     </a>
                     <ul class="sub">
                         <li class="{% if request.path == 'dashboard/artists/' %}active{% endif %}">
-                            <a href="">All Artists</a>
+                            <a href="{% url 'dashboard:artist_list' %}">All Artists</a>
                         </li>
                     </ul>
                 </li>
                 <li class="sub-menu">
-                    <a href="#" class="{% if '/medical-officers/' in request.path %}active{% endif %}">
+                    <a href="#" class="{% if '/collectors/' in request.path %}active{% endif %}">
                         <i class="ti-user"></i>
                         <span>Collectors</span>
                     </a>
                     <ul class="sub">
-                        <li class="{% if request.path == 'dashboard/medical-officers/' %}active{% endif %}">
-                            <a href="">All Collectors</a>
+                        <li class="{% if request.path == 'dashboard/collectors/' %}active{% endif %}">
+                            <a href="{% url 'dashboard:collector_list' %}">All Collectors</a>
                         </li>
                     </ul>
                 </li>
-        
                 <li class="sub-menu">
                     <a href="#" class="{% if 'users' in request.path %}active{% endif %}">
                         <i class="ti-settings"></i>

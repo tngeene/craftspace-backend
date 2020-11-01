@@ -52,6 +52,7 @@
 <script src="{% static 'dashboard/vendor/popper.min.js' %}"></script>
 <script src="{% static 'dashboard/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'dashboard/vendor/jquery.dcjqaccordion.2.7.js' %}"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 {% block scripts %}{% endblock %}
 
@@ -68,6 +69,17 @@
             $("#clock").html(new Date().toLocaleTimeString());
         }, 1000);
     })
+    {% if messages %}
+    {% for message in messages %}
+    $(document).ready(function(){
+        swal({
+            title: "{{ message }}",
+            icon: "{{ message.tags }}",
+            timer: 2000,
+            });
+    });
+    {% endfor %}
+    {% endif %}
 </script>
 </body>
 </html>

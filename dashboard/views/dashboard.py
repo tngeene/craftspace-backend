@@ -5,7 +5,7 @@ from core.models import Event
 from products.models import Product
 from orders.models import Order, CustomOrder
 
-User = get_user_model() 
+User = get_user_model()
 class DashboardView(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         user = self.request.user

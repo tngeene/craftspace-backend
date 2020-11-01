@@ -44,7 +44,13 @@ class UserAccount(AbstractUser):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
+GENDER_CHOICES = [
+    ('male', 'male'),
+    ('female', 'female'),
+]
+
 class BaseProfile(models.Model):
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='male')
     bio = models.TextField(blank=True)
     county = models.CharField(max_length=50,null=True)
     birth_place = models.CharField(max_length=100,null=True)

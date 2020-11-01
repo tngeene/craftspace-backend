@@ -2,6 +2,7 @@ import os
 import cloudinary
 from datetime import timedelta
 from decouple import config
+from django.contrib.messages import constants as messages
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -134,10 +135,10 @@ STATIC_ROOT = 'static'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'dashboard_login'
 LOGIN_REDIRECT_URL = 'dashboard:index'
 LOGOUT_URL = 'dashboard_logout'
-LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'dashboard_login'
 
 # mpesa constants
 CONSUMER_KEY = config('CONSUMER_KEY')
@@ -200,3 +201,12 @@ EMAIL_HOST_USER=config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT=config('EMAIL_PORT', cast=int)
 EMAIL_USE_TLS = True
+
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'info',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
