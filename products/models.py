@@ -36,6 +36,7 @@ class Product(models.Model):
     quantity = models.IntegerField(default=1)
     available = models.PositiveIntegerField(default=1, validators=[validate_quantities_available,])
     uploaded_by = models.ForeignKey(UserAccount,on_delete=models.CASCADE,related_name='products')
+    is_approved = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True,null=True)
     updated_at = models.DateTimeField(auto_now=True,null=True)
 

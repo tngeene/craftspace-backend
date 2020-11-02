@@ -1,0 +1,21 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}
+    Confirm Product Rejection
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="text-center card-body">
+                    <h3 class="py-3">Reject Product</h3>
+                        <p>Are you sure you want to reject {{ product.name }}?</p>
+                        <a href="{% url 'dashboard:product_reject_action' product.pk %}" class="mx-1">
+                                                <button class="btn btn-danger">Reject</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

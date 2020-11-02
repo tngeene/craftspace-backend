@@ -3,82 +3,60 @@
 {% load static %}
 
 {% block title %}
-    All Product Categories
+All Product Categories
 {% endblock %}
 
 {% block styles %}
-    <link href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}">
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h3 class="text-center py-3">Product Categories</h3>
-                    <div class="float-right">
-                            <a href="#">
-                                <button class="btn btn-primary btn-sm">Add Category</button>
-                            </a>
-                        </div>
-                    <table class="table table-striped py-3" id="data-table">
-                        <thead>
-                        <tr>
-                             <th>Name</th>
-                                <th>No. of Products</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                             <tr>
-                                <td>Air Conditioners</td>
-                                <td>8</td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Home appliances</td>
-                                <td>25</td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Water Heaters</td>
-                                <td>75</td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Water Dispensers</td>
-                                <td>47</td>
-                                <td>
-                                    <a href="#">
-                                        <button class="btn btn-primary btn-sm">View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                        <tr>
-
-                        </tbody>
-                    </table>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="text-center py-3">All Product Categories</h3>
+                <div class="float-right mb-2">
+                    <a href="{% url 'dashboard:product_category_add' %}">
+                        <button class="btn btn-primary btn-sm">Add New Category</button>
+                    </a>
                 </div>
+                <table class="table table-striped py-3" id="data_table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>No.of Products</th>
+                            <th>Action</th>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }} </td>
+                            <td> {{ category.products.count }}</td>
+                            <td>
+                                <a href="{% url 'dashboard:product_category_details' category.pk %}">
+                                    <button class="btn btn-primary btn-sm">View</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
-    <script>
-        $('#data-table').DataTable();
-    </script>
+<script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
+<!--init datatable-->
+<script>
+    $(document).ready(function () {
+        $('#data_table').DataTable({
+            "pageLength": 25,
+        });
+    });
+</script>
 {% endblock %}

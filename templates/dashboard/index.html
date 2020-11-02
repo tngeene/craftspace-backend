@@ -302,7 +302,6 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Order No.</th>
                                 <th>No. of Pieces</th>
                                 <th>Ordered By</th>
                                 <th>Email</th>
@@ -314,7 +313,6 @@
                         <tbody>
                         {% for order in  recent_orders %}
                         <tr>
-                                <td> {{ order.id }} </td>
                                 <td>{{order.order_items.all.count}}</td>
                                 {% if order.user %}
                                 <td>{{ order.user.get_full_name }}</td>
@@ -324,12 +322,14 @@
                                 <td>{{ order.email }}</td>
                                 <td>{{ order.order_total }}</td>
                                 {% if order.status  == 'placed' %}
-                                <td> <span class="badge badge-pill badge-info">Pending Payment</span> </td>
+                                <td> <span class="badge badge-pill badge-warning">Pending Payment</span> </td>
                                 {% elif order.status == 'paid' %}
                                 <td> <span class="badge badge-pill badge-success">Paid</span> </td>
+                                {% elif order.status == 'created' %}
+                                <td> <span class="badge badge-pill badge-info">Placed</span> </td>
                                 {% endif %}
                                 <td>
-                                    <a href="#">
+                                    <a href="{% url 'dashboard:order_details' order.pk %}">
                                         <button class="btn btn-primary btn-sm">View</button>
                                     </a>
                                 </td>

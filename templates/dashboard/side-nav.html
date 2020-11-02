@@ -9,19 +9,16 @@
                     </a>
                 </li>
                 <li class="sub-menu">
-                    <a href="#" class="{% if '/medical-records/' in request.path %}active{% endif %}">
+                    <a href="#" class="{% if '/products/' in request.path %}active{% endif %}">
                         <i class="ti-package"></i>
                         <span>Art Pieces</span>
                     </a>
                     <ul class="sub">
-                         <li class="{%if request.path == 'dashboard/art-pieces/' %}active{% endif %}">
-                            <a href="">All Pieces</a>
+                         <li class="{%if request.path == 'dashboard/products/' %}active{% endif %}">
+                            <a href="{% url 'dashboard:product_list' %}">All Pieces</a>
                         </li>
-                        {% comment %} <li class="{%if request.path == 'dashboard/medical-records/' %}active{% endif %}">
-                            <a href="#">Add Product</a>
-                        </li> {% endcomment %}
-                        <li class="{%if request.path == 'dashboard/art-pieces/' %}active{% endif %}">
-                            <a href="">Art Categories</a>
+                        <li class="{%if request.path == 'dashboard/products/' %}active{% endif %}">
+                            <a href="{% url 'dashboard:product_category_list' %}">Art Categories</a>
                         </li>
                     </ul>
                 </li>
@@ -31,8 +28,11 @@
                         <span>Orders</span>
                     </a>
                     <ul class="sub">
-                        <li class="{%if request.path == 'dashboar/orders/list' %}active{% endif %}">
-                            <a href="">All Orders</a>
+                        <li class="{% if request.path == 'dashboard/orders/all' %}active{% endif %}">
+                            <a href="{% url 'dashboard:order_list' %}">All Orders</a>
+                        </li>
+                        <li class="{% if request.path == 'dashboard/custom-orders/all' %}active{% endif %}">
+                            <a href="{% url 'dashboard:custom_order_list' %}">All Custom Orders</a>
                         </li>
                     </ul>
                 </li>

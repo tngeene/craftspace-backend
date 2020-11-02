@@ -1,10 +1,14 @@
+from core.models import Event
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView
+
+from products.models import Product
+
 from .dashboard import DashboardView
-from django.contrib.auth import get_user_model
-from core.models import Event
+
 User = get_user_model()
 
 # view for confirming user suspension
@@ -61,5 +65,29 @@ def reject_event(request, pk):
 
     messages.success(request, "Event Rejected")
     return redirect("dashboard:event_details", pk=pk)
+
+
+# view to prompt user if they want to reject a product
+class ProductConfirmRejectView(DashboardView, DetailView):
+    model = Product
+    context_object_name = 'product'
+    template_name = 'dashboard/products/confirm-reject.html'
+
+# product approve or reject
+def approve_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.is_approved = True
+    product.save()
+
+    messages.success(request, "Product Approved")
+    return redirect("dashboard:product_details", pk=pk)
+
+def reject_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.is_approved = not product.is_approved
+    product.save()
+
+    messages.success(request, "Product Rejected")
+    return redirect("dashboard:product_details", pk=pk)
 
 

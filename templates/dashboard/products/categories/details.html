@@ -1,0 +1,119 @@
+{% extends 'dashboard/base.html' %} {% load static %} {% block title %} Category Details
+{% endblock %} {% block styles %}
+<link rel="stylesheet" href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}">
+{% endblock %} {% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+               <div class="row">
+          <div class="col-md-4 p-3 text-center">
+            <div class="py-3">
+              {% if category.cover_photo %}
+              <img
+                src="{{ category.cover_photo.url }}"
+                alt=" craftspace {{ category.name }}"
+                class="w-50"
+              />
+              {% else %}
+              <img
+                src="{% static 'dashboard/img/category_icon.png' %}"
+                alt="craftspace {{ category.name }}"
+                class="w-50"
+              />
+              {% endif %}
+              <p>
+                <a href="{% url 'dashboard:product_category_edit' category.pk %}" class="mx-1">
+                  <button class="btn btn-primary mt-3">Edit</button>
+                </a>
+              </p> 
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="m-3 p-3 shadow-sm">
+              <h3 class="text-center py-3">category Details</h3>
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <td>{{ category.name }}</td>
+                    </tr>
+                    <tr>
+                      <th>No. Of Products</th>
+                      <td>{{ category.products.count }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="row tab-content">
+            <div class="col-md-12 mb-4" id="pills-productss" role="tabpanel"
+                aria-labelledby="pills-productss-tab">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="text-center py-3">All Products In this Category</h3>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="data_table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Has 3D</th>
+                                <th>Uploaded By</th>
+                                <th>Uploaded On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.description|truncatechars:50 }} </td>
+                                {% if product.spin_image %}
+                                <td> <span class="badge badge-pill badge-success">Yes</span> </td>
+                                {% else %}
+                                <td> <span class="badge badge-pill badge-info">No</span> </td>
+                                {% endif %}
+                                <td>{{ product.uploaded_by.get_full_name }} </td>
+                                <td>{{ product.created_on }} </td>
+                                <td>
+                                    <a href="{% url 'dashboard:product_details' product.pk %}">
+                                        <button class="btn btn-primary btn-sm">View</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr class="text-center">
+                                <td colspan="5">No Art Pieces Uploaded Yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %} {% block scripts %}
+<script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
+<!--init datatable-->
+<script src="{% static 'dashboard/vendor/js-init/init-datatable.js' %}"></script>
+{% endblock %}

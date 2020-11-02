@@ -15,15 +15,6 @@ from products.models import Category, Product
 
 from ..permissions import IsArtistOrDisallow
 
-# class ProductsAPIView(ModelViewSet):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-#     http_method_name = ['get','post','head', 'put','patch',]
-#     permission_classes = [IsArtistOrDisallow,IsAuthenticated]
-
-#     def perform_create(self, serializer):
-#         user = self.request.user
-#         return serializer.save(uploaded_by=user)
 
 class ProductDetailsAPIView(RetrieveAPIView):
     serializer_class = ProductDetailSerializer
@@ -50,7 +41,7 @@ class ProductListAPIView(ListAPIView):
     filterset_fields = ['category','uploaded_by']
 
     def get_queryset(self):
-        return Product.objects.all()
+        return Product.objects.filter(is_approved=True)
 
 class ProductDestroyAPIView(RetrieveDestroyAPIView):
     serializer_class = ProductSerializer

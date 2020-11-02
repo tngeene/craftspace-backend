@@ -1,7 +1,7 @@
 {% extends "dashboard/base.html" %}
 
 {% block title %}
-   Add New Category
+    Edit Category
 {% endblock %}
 
 {% block content %}
@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h3 class="text-center py-3">Add New Category</h3>
+                    <h3 class="text-center py-3">Edit Category</h3>
                     <form method="POST" class="form-area" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% include 'dashboard/partials/forms/form.html' %}
