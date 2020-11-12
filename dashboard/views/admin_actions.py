@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView
-
+from dashboard.utils import send_suspension_email, send_activation_email
 from products.models import Product
 
 from .dashboard import DashboardView
@@ -21,6 +21,7 @@ class UserConfirmSuspendView(DashboardView, DetailView):
 def suspend_user(request, pk):
     user = get_object_or_404(User, pk=pk)
     user.is_active = not user.is_active
+    send_suspension_email(user, request)
     user.save()
 
     if(user.membership_type == 'Artist'):
@@ -37,6 +38,7 @@ def suspend_user(request, pk):
 def activate_user(request,pk):
     user = get_object_or_404(User, pk=pk)
     user.is_active = True
+    send_activation_email(user, request)
     user.save()
 
     if(user.membership_type == 'Artist'):
