@@ -34,7 +34,12 @@ All Orders
                         {% for order in  orders %}
                         <tr>
                             <td> {{ order.description|truncatechars:50 }} </td>
-                            <td>{{ order.requested_by.get_full_name }}</td>
+                            <td>
+                                {% if order.requested_by %}
+                                {{ order.requested_by.get_full_name }}
+                                {% else %}
+                                {{ order.first_name }} {{ order.last_name }}
+                                {% endif %}</td>
                             <td> {{order.email}} </td>
                             <td>{{ order.artist.get_full_name }}</td>
                             {% if order.is_complete %}

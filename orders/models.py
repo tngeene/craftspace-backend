@@ -59,6 +59,8 @@ class CustomOrder(models.Model):
     due_date = models.DateField()
     artist = models.ForeignKey(User,on_delete=models.CASCADE,limit_choices_to={'membership_type':'Artist'},related_name='cust_orders')
     requested_by = models.ForeignKey(User,on_delete=models.SET_NULL,related_name='custom_orders',null=True)
+    first_name = models.CharField(max_length=254, null=True, blank=True)
+    last_name = models.CharField(max_length=254, null=True, blank=True)
     phone_number = models.CharField(max_length=20,null=True)
     email = models.EmailField(null=True)
     is_complete = models.BooleanField(default=False)

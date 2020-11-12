@@ -6,13 +6,13 @@ from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from rest_framework import generics, status
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from orders.apiv1.serializers.order_serializers import (CartItemSerializer,
+from orders.apiv1.serializers.order_serializers import (CartItemSerializer, OrderListSerializer,
                                                         OrderSerializer)
 from orders.models import CartItem, Order
 from payments.models import MpesaPayment
@@ -27,11 +27,17 @@ class CartItemView(ModelViewSet):
     serializer_class = CartItemSerializer
 
 
-class OrderAPIView(ModelViewSet):
+class OrderDetailsAPIView(RetrieveAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    # GET for admin, POST for collectors
-    permission_classes = [IsAuthenticated, IsCollectorOrIsAdmin, ]
+
+class OrderListAPIView(ListAPIView):
+    serializer_class = OrderListSerializer
+    def get_queryset(self):
+        user = self.request.user
+        qs = Order.objects.filter(user=user)
+        return qs
+
 
 
 # mpesa variables

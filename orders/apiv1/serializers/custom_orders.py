@@ -5,6 +5,7 @@ from ...models import CustomOrder
 
 User = get_user_model()
 
+
 class CustomOrderCreateSerializer(serializers.ModelSerializer):
     requested_by = serializers.StringRelatedField(read_only=True)
 
@@ -12,10 +13,12 @@ class CustomOrderCreateSerializer(serializers.ModelSerializer):
         model = CustomOrder
         fields = '__all__'
 
+
 class CustomOrderUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','first_name','last_name')
+        fields = ('id', 'first_name', 'last_name')
+
 
 class CustomOrderDetailSerializer(serializers.ModelSerializer):
     requested_by = CustomOrderUsersSerializer()
@@ -24,5 +27,5 @@ class CustomOrderDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomOrder
-        fields = ('id','description','picture','size','medium','due_date','artist',
-            'requested_by','phone_number','email','created_on','updated_on',)
+        fields = ('id', 'description', 'picture', 'size', 'medium', 'due_date', 'artist',
+                  'requested_by', 'first_name', 'last_name', 'phone_number', 'email', 'created_on', 'updated_on',)
