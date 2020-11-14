@@ -231,7 +231,7 @@
                                 <td>{{ product.uploaded_by.get_full_name }} </td>
                                 <td>{{ product.created_on }} </td>
                                 <td>
-                                    <a href="#">
+                                    <a href="{% url 'dashboard:product_details' product.pk %}">
                                         <button class="btn btn-primary btn-sm">View</button>
                                     </a>
                                 </td>
@@ -388,7 +388,7 @@
                                 <td> <span class="badge badge-pill badge-success">Paid</span> </td>
                                 {% endif %}
                                 <td>
-                                    <a href="#">
+                                    <a href="{% url 'dashboard:custom_order_details' order.pk %}">
                                         <button class="btn btn-primary btn-sm">View</button>
                                     </a>
                                 </td>

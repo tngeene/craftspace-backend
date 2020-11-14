@@ -1,0 +1,108 @@
+{% extends 'dashboard/base.html' %} {% load static %} {% block title %} Order Details
+{% endblock %} {% block styles %}
+<link rel="stylesheet" href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}">
+{% endblock %} {% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-10 mx-auto">
+                        <div class="m-3 p-3 shadow-sm">
+                            <h3 class="text-center py-3">Order Details</h3>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <th>Ordered By</th>
+                                            <td>{% if order.user %}
+                                                {% if order.user.membership_type == 'artist' %}
+                                                <a href = "{% url 'dashboard:artist_details' order.user.pk %}"> {{order.user.get_full_name}}
+                                                {% elif  order.user.membership_type == 'collector' %}
+                                                <a href = "{% url 'dashboard:artist_details' order.user.pk %}"> {{order.user.get_full_name}}
+                                                {% endif %}
+                                            {% elif not order.user %}
+                                            {{ order.first_name }} {{ order.last_name }}
+                                            {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>No. Of Products</th>
+                                            <td>{{ order.order_items.count }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total Amount</th>
+                                            <td>{{ order.order_total }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="row tab-content">
+            <div class="col-md-12 mb-4" id="pills-productss" role="tabpanel" aria-labelledby="pills-productss-tab">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="text-center py-3">All Products In this Order</h3>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="data_table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Has 3D</th>
+                                        <th>Quantity</th>
+                                        <th>Uploaded By</th>
+                                        <th>Uploaded On</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for order_item in order.order_items.all %}
+                                    <tr>
+                                        <td>{{ order_item.product.name }}</td>
+                                        <td>{{ order_item.product.description|truncatechars:50 }} </td>
+                                        {% if order_item.product.spin_image %}
+                                        <td> <span class="badge badge-pill badge-success">Yes</span> </td>
+                                        {% else %}
+                                        <td> <span class="badge badge-pill badge-info">No</span> </td>
+                                        {% endif %}
+                                        <td>{{ order_item.quantities }} </td>
+                                        <td>{{ order_item.product.uploaded_by.get_full_name }} </td>
+                                        <td>{{ order_item.product.created_on }} </td>
+                                        <td>
+                                            <a href="{% url 'dashboard:product_details' order_item.product.pk %}">
+                                                <button class="btn btn-primary btn-sm">View</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %} {% block scripts %}
+<script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
+<!--init datatable-->
+<script src="{% static 'dashboard/vendor/js-init/init-datatable.js' %}"></script>
+{% endblock %}

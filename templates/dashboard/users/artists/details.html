@@ -1,9 +1,6 @@
 {% extends 'dashboard/base.html' %} {% load static %} {% block title %} Artist Details
 {% endblock %} {% block styles %}
-<link
-  href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}"
-  rel="stylesheet"
-/>
+<link href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -15,17 +12,9 @@
           <div class="col-md-4 p-3 text-center">
             <div class="py-3">
               {% if profile.photo %}
-              <img
-                src="{{ profile.photo.url }}"
-                alt="{{ user.get_full_name }}"
-                class="w-50"
-              />
+              <img src="{{ profile.photo.url }}" alt="{{ user.get_full_name }}" class="w-50" />
               {% else %}
-              <img
-                src="{% static 'dashboard/img/user_icon.png' %}"
-                alt="{{ user.get_full_name }}"
-                class="w-50"
-              />
+              <img src="{% static 'dashboard/img/user_icon.png' %}" alt="{{ user.get_full_name }}" class="w-50" />
               {% endif %}
 
               <h5 class="pt-5">{{ user.get_full_name }}</h5>
@@ -42,7 +31,7 @@
                 <a href="{% url 'dashboard:artist_edit' user.pk %}" class="mx-1">
                   <button class="btn btn-primary">Edit</button>
                 </a>
-              </p> 
+              </p>
             </div>
           </div>
           <div class="col-md-8">
@@ -80,9 +69,7 @@
                       {% if user.last_login %}
                       <td>{{ user.last_login }} </td>
                       {% else %}
-                      <td><span class="badge badge-pill badge-info"
-                          >Never Logged In</span
-                        ></td>
+                      <td><span class="badge badge-pill badge-info">Never Logged In</span></td>
                       {% endif %}
                     </tr>
                     <tr>
@@ -94,13 +81,9 @@
                       <th>Status</th>
                       <td>
                         {% if user.is_active %}
-                        <span class="badge badge-pill badge-success"
-                          >Active</span
-                        >
+                        <span class="badge badge-pill badge-success">Active</span>
                         {% else %}
-                        <span class="badge badge-pill badge-danger"
-                          >Suspended</span
-                        >
+                        <span class="badge badge-pill badge-danger">Suspended</span>
                         {% endif %}
                       </td>
                     </tr>
@@ -108,24 +91,17 @@
                 </table>
                 <div class="text-center py-3">
                   {% if user.is_active%}
-                   <a
-                    href="{% url 'dashboard:user_confirm_suspend' user.pk %}"
-                    class="mx-1"
-                  >
+                  <a href="{% url 'dashboard:user_confirm_suspend' user.pk %}" class="mx-1">
                     <button class="btn btn-warning btn-md">Suspend</button>
                   </a>
                   {% else %}
-                  <a
-                    href="{% url 'dashboard:user_unsuspend_action' user.pk %}"
-                    class="mx-1"
-                  >
+                  <a href="{% url 'dashboard:user_unsuspend_action' user.pk %}" class="mx-1">
                     <button class="btn btn-success btn-md">
                       Activate
                     </button>
                   </a>
                   {% endif %}
-                   <button class="btn btn-primary btn-md" data-toggle="modal"
-                                        data-target="#userBio">Full Bio</button>
+                  <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#userBio">Full Bio</button>
                 </div>
               </div>
             </div>
@@ -136,31 +112,233 @@
   </div>
 </div>
 
-<div class="modal fade" id="userBio" tabindex="-1" role="dialog" aria-labelledby="userBioBody"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="userBioBody">About {{ user.get_full_name }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {{ profile.bio|safe }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+<div class="modal fade" id="userBio" tabindex="-1" role="dialog" aria-labelledby="userBioBody" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userBioBody">About {{ user.get_full_name }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ profile.bio|safe }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+      </div>
     </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-12  mt-4">
+    {% include 'dashboard/partials/nav-pills/artists.html' %}
+  </div>
+  <div class="col-12">
+    <div class="row tab-content">
+      <div class="col-md-12 mb-4 tab-pane fade show active" id="pills-products" role="tabpanel"
+        aria-labelledby="pills-products-tab">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="text-center py-3 text-capitalize">All pieces uploaded by this artist.</h3>
+            <table class="table table-striped py-3" id="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Has 3D</th>
+                  <th>Uploaded On</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for product in products %}
+                <tr>
+                  <td>{{ product.name }}</td>
+                  <td><a
+                      href="{% url 'dashboard:product_category_details' product.category.pk %}">{{ product.category.name }}</a>
+                  </td>
+                  <td>{{ product.description|truncatechars:50 }} </td>
+                  {% if product.spin_image %}
+                  <td> <span class="badge badge-pill badge-success">Yes</span> </td>
+                  {% else %}
+                  <td> <span class="badge badge-pill badge-info">No</span> </td>
+                  {% endif %}
+                  <td>{{ product.created_on }} </td>
+                  <td>
+                    <a href="{% url 'dashboard:product_details' product.pk %}">
+                      <button class="btn btn-primary btn-sm">View</button>
+                    </a>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr class="text-center">
+                  <td colspan="5">No Art Pieces Uploaded Yet.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="text-center py-3">Events Uploaded</h3>
+            <table class="table table-striped py-3" id="data-table2">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Venue</th>
+                  <th>Status</th>
+                  <th>Added</th>
+                  <th>Action</th>
+              </thead>
+              <tbody>
+                {% for event in events %}
+                <tr>
+                  <td>{{ event.name }} </td>
+                  <td> {{ event.description|truncatechars:30 }}</td>
+                  <td> {{ event.venue|truncatechars:30 }}</td>
+                  <td> {{ event.created_on }}</td>
+                  {% if event.is_approved %}
+                  <td>
+                    <span class="badge badge-pill badge-success">Approved</span>
+                  </td>
+                  {% else %}
+                  <td>
+                    <span class="badge badge-pill badge-danger">Rejected</span>
+                  </td>
+                  {% endif %}
+                  <td>
+                    <a href="{% url 'dashboard:event_details' event.pk %}">
+                      <button class="btn btn-primary btn-sm">View</button>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 tab-pane fade" id="pills-custom-orders" role="tabpanel"
+        aria-labelledby="pills-custom-orders-tab">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="text-center py-3">Custom Orders Requested</h3>
+            <table class="table table-striped py-3" id="data-table3">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Requested By</th>
+                  <th>Email</th>
+                  <th>Order Status</th>
+                  <th>Due Date</th>
+                  <th>Placed On</th>
+                  <th></th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in  custom_orders %}
+                <tr>
+                  <td> {{ order.description|truncatechars:50 }} </td>
+                  <td>
+                    {% if order.requested_by.membership_type %}
+                   <a href="{% url 'dashboard:collector_details' order.requested_by.pk %}"> {{ order.requested_by.get_full_name }}</a>
+                    {% else %}
+                    {{ order.first_name }} {{ order.last_name }}
+                    {% endif %}</td>
+                  <td> {{order.email}} </td>
+                  {% if order.is_complete %}
+                  <td> <span class="badge badge-pill badge-success">Done</span> </td>
+                  {% else %}
+                  <td> <span class="badge badge-pill badge-warning">Pending Completion</span> </td>
+                  {% endif %}
+                  <td>{{ order.due_date }}</td>
+                  <td>{{ order.created_on }}</td>
+                  <td>{{ order.order_total }}</td>
+                  {% if order.status  == 'placed' %}
+                  <td> <span class="badge badge-pill badge-info">Pending Payment</span> </td>
+                  {% elif order.status == 'paid' %}
+                  <td> <span class="badge badge-pill badge-success">Paid</span> </td>
+                  {% endif %}
+                  <td>
+                    <a href="{% url 'dashboard:custom_order_details' order.pk %}">
+                      <button class="btn btn-primary btn-sm">View</button>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 tab-pane fade" id="pills-purchases" role="tabpanel" aria-labelledby="pills-purchases-tab">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="text-center py-3">Purchases Made</h3>
+            <table class="table table-striped" id="data-table4">
+              <thead>
+                <tr>
+                  <th>No. of Pieces</th>
+                  <th>Total Price</th>
+                  <th>Order Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in orders %}
+                <tr>
+                  <td>{{order.order_items.all.count}}</td>
+                  <td>{{ order.order_total }}</td>
+                  {% if order.status  == 'placed' %}
+                  <td> <span class="badge badge-pill badge-warning">Pending Payment</span> </td>
+                  {% elif order.status == 'paid' %}
+                  <td> <span class="badge badge-pill badge-success">Paid</span> </td>
+                  {% elif order.status == 'created' %}
+                  <td> <span class="badge badge-pill badge-info">Placed</span> </td>
+                  {% endif %}
+                  <td>
+                    <a href="{% url 'dashboard:order_details' order.pk %}">
+                      <button class="btn btn-primary btn-sm">View</button>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %} {% block scripts %}
-    <script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
-    <!--init datatable-->
-    <script src="{% static 'dashboard/vendor/js-init/init-datatable.js' %}"></script>
+<script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
+<!--init datatable-->
+<script src="{% static 'dashboard/vendor/js-init/init-datatable.js' %}"></script>
 <script>
-  $("#data-table").DataTable();
+  $(document).ready(function () {
+    $('#data-table').DataTable({
+      "pageLength": 25,
+    });
+    $('#data-table2').DataTable({
+      "pageLength": 25,
+    });
+    $('#data-table3').DataTable({
+      "pageLength": 25,
+    });
+    $('#data-table4').DataTable({
+      "pageLength": 25,
+    });
+  });
 </script>
 {% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'dashboard/base.html' %} {% load static %} {% block title %} Custom Order Details
+{% endblock %} {% block styles %}
+<link rel="stylesheet" href="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.css' %}">
+{% endblock %} {% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                <div class="col-md-4 p-3 text-center">
+            <div class="py-3">
+              {% if order.picture %}
+              <img src="{{ order.picture.url }}" alt="craftspace custom orders" class="w-50" />
+              {% else %}
+              <img src="{% static 'dashboard/img/user_icon.png' %}" alt="craftspace custom orders" class="w-50" />
+              {% endif %}
+            </div>
+          </div>
+
+                    <div class="col-md-8 mx-auto">
+                        <div class="m-3 p-3 shadow-sm">
+                            <h3 class="text-center py-3"> Custom Order Details</h3>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <th>Ordered By</th>
+                                            <td>{% if order.requested_by %}
+                                                <a href="{% url 'dashboard:collector_details' order.requested_by.pk %}">
+                                                    {{order.requested_by.get_full_name}}
+                                                        {% elif not order.requested_by %}
+                                                        {{ order.first_name }} {{ order.last_name }}
+                                                        {% endif %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Artist</th>
+                                            <td><a
+                                                    href="{% url 'dashboard:artist_details' order.artist.pk %}">{{ order.artist.get_full_name }}</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td>{{ order.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone Number</th>
+                                            <td>{{ order.phone_number }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Due Date</th>
+                                            <td>{{ order.due_date }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Status</th>
+                                            <td>
+                                                {% if order.is_complete %}
+                                                <span class="badge badge-pill badge-success">Completed</span>
+                                                {% else %}
+                                                <span class="badge badge-pill badge-danger">Pending Completion</span>
+                                                {% endif %}</td>
+                                        </tr>
+                                        <tr>
+                                            {% if order.price %}
+                                            <th>Price</th>
+                                            <td>{{ order.price }}</td>
+                                            {% endif %}
+                                        </tr>
+                                        <tr>
+                                            <th>Uploaded</th>
+                                            <td>{{ order.created_on }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}

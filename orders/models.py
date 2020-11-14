@@ -27,7 +27,7 @@ class Order(models.Model):
     first_name = models.CharField(max_length=45,null=True)
     last_name = models.CharField(max_length=45,null=True)
     email = models.EmailField(null=True)
-    order_items = models.ManyToManyField(CartItem)
+    order_items = models.ManyToManyField(CartItem, related_name='orders')
     phone_number = models.CharField(max_length=15,null=True,blank=True)
     order_total = models.DecimalField(max_digits=50,decimal_places=2,null=True)
     order_date = models.DateTimeField(auto_now_add=True)

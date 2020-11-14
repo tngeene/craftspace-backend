@@ -3,6 +3,8 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from .dashboard import DashboardView
 from products.models import Product, Category, Medium
+from django.conf import settings
+
 
 class ProductListView(DashboardView, ListView):
     model = Product
@@ -13,6 +15,13 @@ class ProductDetailView(DashboardView, DetailView):
     model = Product
     context_object_name = 'product'
     template_name = 'dashboard/products/details.html'
+
+    def get_context_data(self, **kwargs):
+        product_id = self.object.id
+        frontend_host = settings.FRONTEND_HOST
+        context = super().get_context_data(**kwargs)
+        context["product_url"] = f"{frontend_host}/art/{product_id}"
+        return context
 
 class CategoryCreateView(DashboardView, CreateView):
     model = Category

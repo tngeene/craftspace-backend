@@ -46,7 +46,7 @@
                     </tr>
                     <tr>
                       <th>Category</th>
-                      <td> <a href = {% url 'dashboard:product_category_details' product.category.pk %} {{ product.category.name }}</a></td>
+                      <td> <a href = {% url 'dashboard:product_category_details' product.category.pk %}> {{ product.category.name }}</a></td>
                     </tr>
                     <tr>
                       <th>Price</th>
@@ -60,16 +60,12 @@
                       <th>Quantities Available</th>
                       <td>{{ product.available }}</td>
                     </tr>
-                    {% comment %} <tr>
-                      <th>Quantities Available</th>
-                      {% if product.ticket_price %}
-                      <td>Ksh {{ product.ticket_price }}</td>
-                      {% else %}
-                      <td><span class="badge badge-pill badge-info"
-                          >Free</span
-                        ></td>
+                   <tr>
+                   {% if product.spin_image %}
+                      <th>View 3D Image</th>
+                      <td> <a href="{{product_url}}" target="blank">View in app</a></td>
                       {% endif %}
-                    </tr> {% endcomment %}
+                    </tr> 
                     <tr>
                       <th>Uploaded On</th>
                       <td>{{ product.created_on }} </td>

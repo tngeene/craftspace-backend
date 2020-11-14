@@ -27,10 +27,6 @@ class EventUpdateView(DashboardView, UpdateView):
               'venue', 'ticket_price', 'banner',)
     template_name = 'dashboard/events/edit.html'
 
-    def form_valid(self, form):
-        form.instance.uploaded_by = self.request.user
-        return super().form_valid(form)
-
     def get_success_url(self):
         messages.success(self.request, "Event Successully Updated")
         return reverse_lazy("dashboard:event_details", kwargs={'pk': self.object.pk})

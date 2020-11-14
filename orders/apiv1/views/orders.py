@@ -102,19 +102,17 @@ class OrderPostView(APIView):
             print(f"response is {response.status_code}")
             print(f"response data is {response.text}")
 
-            if response.status_code == 200:
-                return Response(status=status.HTTP_200_OK)
-            elif response.status_code == 500:
-                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            else:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
+            # if response.status_code == 200:
+            #     return Response(status=status.HTTP_200_OK)
+            # elif response.status_code == 500:
+            #     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            # else:
+            #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
         # processing order items and saving to db
         order_items = data['order_items']
         for item in order_items:
-            print(f"items in cart are {item['product']['id']}")
             cart_product = get_object_or_404(Product, id=item['product']['id'])
-            print(f'cart prod is {cart_product}')
             if self.request.user.is_anonymous:
                 cart_items = CartItem.objects.create(
                     product=cart_product, quantities=item['product']['quantities'])
@@ -127,29 +125,36 @@ class OrderPostView(APIView):
 
         return Response(status=status.HTTP_200_OK)
 
-# def send_checkout_email(self, object):
-#     current_site = get_current_site(self.request)
+# come back to this
+def send_checkout_email(self, object):
+    current_site = get_current_site(self.request)
 
+    from_email = "sales@craftspace.com"
+    client_subject = "Invoice for order on craftspace"
+    client_message = render_to_string(
+        "emails/invoice.html",
+            {
+                "user": object.first_name,
+                "domain": current_site.domain,
+                "site_name": current_site.name,
+                "products": object.order_items
+            },
+        )
+    client_email = EmailMultiAlternatives(
+                client_subject, client_message, from_email=from_email, to=[object.email,]
+            )
+    client_email.content_subtype = "html"
 
-#     client_subject = "Invoice for order on craftspace"
-#     client_message = render_to_string(
-#         "emails/invoice.html",
-#             {
-#                 "user": object.first_name,
-#                 "email": object.email,
-#                 "domain": current_site.domain,
-#             },
-#         )
-#     client_email = EmailMultiAlternatives(
-#                 subject, client_message, from_email="sales@craftspace.com", to=[object.email,]
-#             )
-
-#     artist_subject = "New Order Notification"
-#     artist_message = render_to_string(
-#         "emails/receipt.html",
-#         {
-#             "user":object.
-#         },
-#     )
-#     email.content_subtype = "html"
-#     email.send()
+    artist_subject = "New Order Notification"
+    artist_message = render_to_string(
+        "emails/receipt.html",
+        {
+            "user":object.order_times.uploaded_by.email,
+            "domain": current_site.domain,
+            "site_name": current_site.name,
+            "products": object.order_items
+        },
+    )
+    artist_email = EmailMultiAlternatives(artist_subject, artist_message, from_email=from_email, to=[object])
+    artist_email.content_subtype = "html"
+    artist_email.send()

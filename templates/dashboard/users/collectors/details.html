@@ -155,12 +155,158 @@
         </div>
     </div>
 </div>
+
+<div class="row mt-4">
+  <div class="col-md-12  mt-4">
+    {% include 'dashboard/partials/nav-pills/collectors.html' %}
+  </div>
+  <div class="col-12">
+    <div class="row tab-content">
+      <div class="col-md-12 tab-pane fade show active" id="pills-purchases" role="tabpanel" aria-labelledby="pills-purchases-tab">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="text-center py-3">Purchases Made</h3>
+            <table class="table table-striped" id="data-table">
+              <thead>
+                <tr>
+                  <th>No. of Pieces</th>
+                  <th>Total Price</th>
+                  <th>Order Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in orders %}
+                <tr>
+                  <td>{{order.order_items.all.count}}</td>
+                  <td>{{ order.order_total }}</td>
+                  {% if order.status  == 'placed' %}
+                  <td> <span class="badge badge-pill badge-warning">Pending Payment</span> </td>
+                  {% elif order.status == 'paid' %}
+                  <td> <span class="badge badge-pill badge-success">Paid</span> </td>
+                  {% elif order.status == 'created' %}
+                  <td> <span class="badge badge-pill badge-info">Placed</span> </td>
+                  {% endif %}
+                  <td>
+                    <a href="{% url 'dashboard:order_details' order.pk %}">
+                      <button class="btn btn-primary btn-sm">View</button>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 tab-pane fade" id="pills-events" role="tabpanel" aria-labelledby="pills-events-tab">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="text-center py-3">Events Uploaded</h3>
+            <table class="table table-striped py-3" id="data-table2">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Venue</th>
+                  <th>Status</th>
+                  <th>Added</th>
+                  <th>Action</th>
+              </thead>
+              <tbody>
+                {% for event in events %}
+                <tr>
+                  <td>{{ event.name }} </td>
+                  <td> {{ event.description|truncatechars:30 }}</td>
+                  <td> {{ event.venue|truncatechars:30 }}</td>
+                  <td> {{ event.created_on }}</td>
+                  {% if event.is_approved %}
+                  <td>
+                    <span class="badge badge-pill badge-success">Approved</span>
+                  </td>
+                  {% else %}
+                  <td>
+                    <span class="badge badge-pill badge-danger">Rejected</span>
+                  </td>
+                  {% endif %}
+                  <td>
+                    <a href="{% url 'dashboard:event_details' event.pk %}">
+                      <button class="btn btn-primary btn-sm">View</button>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 tab-pane fade" id="pills-custom-orders" role="tabpanel"
+        aria-labelledby="pills-custom-orders-tab">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h3 class="text-center py-3">Custom Orders Requested</h3>
+            <table class="table table-striped py-3" id="data-table3">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Artist</th>
+                  <th>Order Status</th>
+                  <th>Due Date</th>
+                  <th>Placed On</th>
+                  <th></th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in  custom_orders %}
+                <tr>
+                  <td> {{ order.description|truncatechars:50 }} </td>
+                  <td><a href="{% url 'dashboard:artist_details' order.artist.pk %}"> {{ order.artist.get_full_name }}</a></td>
+                  {% if order.is_complete %}
+                  <td> <span class="badge badge-pill badge-success">Done</span> </td>
+                  {% else %}
+                  <td> <span class="badge badge-pill badge-warning">Pending Completion</span> </td>
+                  {% endif %}
+                  <td>{{ order.due_date }}</td>
+                  <td>{{ order.created_on }}</td>
+                  <td>{{ order.order_total }}</td>
+                  {% if order.status  == 'placed' %}
+                  <td> <span class="badge badge-pill badge-info">Pending Payment</span> </td>
+                  {% elif order.status == 'paid' %}
+                  <td> <span class="badge badge-pill badge-success">Paid</span> </td>
+                  {% endif %}
+                  <td>
+                    <a href="{% url 'dashboard:custom_order_details' order.pk %}">
+                      <button class="btn btn-primary btn-sm">View</button>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %} {% block scripts %}
     <script src="{% static 'dashboard/vendor/data-tables/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'dashboard/vendor/data-tables/dataTables.bootstrap4.min.js' %}"></script>
     <!--init datatable-->
     <script src="{% static 'dashboard/vendor/js-init/init-datatable.js' %}"></script>
 <script>
-  $("#data-table").DataTable();
+  $(document).ready(function () {
+    $('#data-table').DataTable({
+      "pageLength": 25,
+    });
+    $('#data-table2').DataTable({
+      "pageLength": 25,
+    });
+    $('#data-table3').DataTable({
+      "pageLength": 25,
+    });
+  });
 </script>
 {% endblock %}
