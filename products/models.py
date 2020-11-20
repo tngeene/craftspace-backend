@@ -1,8 +1,12 @@
+import os
+
+from cloudinary.models import CloudinaryField
 from django.db import models
 from django.db.transaction import TransactionManagementError
 from users.models import UserAccount
+
 from .validators import validate_quantities_available
-from cloudinary.models import CloudinaryField
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -49,3 +53,8 @@ class Product(models.Model):
             return True
         else:
             return False
+
+    @property
+    def file_type(self):
+        file_name = os.path.basename(self.spin_image.name)
+        return os.path.splitext(file_name)[1].lstrip('.')
