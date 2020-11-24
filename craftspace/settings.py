@@ -1,4 +1,5 @@
 import os
+from typing import cast
 import cloudinary
 from datetime import timedelta
 from decouple import config
@@ -14,10 +15,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
+PRODUCTION = config('PRODUCTION', cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
+FRONTEND_HOST = config('FRONTEND_HOST')
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS =True
+CORS_ORIGIN_WHITELIST = [FRONTEND_HOST]
 
 # Application definition
 
@@ -31,27 +38,28 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.humanize',
 
+    # 3rd party libs
+    'allauth',
+    'allauth.account',
+    'cloudinary',
+    'corsheaders',
+    'django_filters',
+    'djoser',
+    'phonenumber_field',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'rest_auth',
     'rest_auth.registration',
-    'django_filters',
-    'djoser',
-    'corsheaders',
     'widget_tweaks',
-    'cloudinary',
-    'phonenumber_field',
 
-    'allauth',
-    'allauth.account',
-
+    # system apps
     'core',
-    'users',
     'dashboard',
+    'payments',
     'products',
     'orders',
-    'payments',
+    'users',
 ]
 
 SITE_ID =1
@@ -91,15 +99,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'craftspace.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': config('DB_ENGINE'),
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': '',
+# check which database to use
+if PRODUCTION:
+    DATABASES = {
+        'default': {
+            'ENGINE': config('DB_ENGINE'),
+            'NAME':  config('DB_NAME'),  # change in prod
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': config('DEV_DB_ENGINE'),
+            'NAME': config('DEV_DB_NAME'),
+        }
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -161,13 +179,6 @@ cloudinary.config(
     api_key='323542637277415',
     api_secret='-i975ZpUNBKp-4O-2HskFX7OlPU'
 )
-
-
-FRONTEND_HOST = config('FRONTEND_HOST')
-
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ALLOW_CREDENTIALS =True
-CORS_ORIGIN_WHITELIST = [FRONTEND_HOST]
 
 AUTH_USER_MODEL = 'users.UserAccount'
 
