@@ -14,7 +14,7 @@ urlpatterns = [
          name='dashboard_login'),
 
     # API urls
-    path('api/v1/',include('users.urls')),
+    path('api/v1/',include('users.urls', namespace="users")),
     path('api/v1/',include('core.apiv1.urls')),
     path('api/v1/art-pieces/',include('products.apiv1.urls')),
     path('api/v1/',include('orders.apiv1.urls')),

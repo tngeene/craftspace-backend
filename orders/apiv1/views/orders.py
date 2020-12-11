@@ -102,12 +102,6 @@ class OrderPostView(APIView):
             print(f"response is {response.status_code}")
             print(f"response data is {response.text}")
 
-            # if response.status_code == 200:
-            #     return Response(status=status.HTTP_200_OK)
-            # elif response.status_code == 500:
-            #     return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            # else:
-            #     return Response(status=status.HTTP_400_BAD_REQUEST)
 
         # processing order items and saving to db
         order_items = data['order_items']
