@@ -1,0 +1,40 @@
+{% extends 'dashboard/base.html' %} {% load static %} {% block title %} Feedback Details
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="m-3 p-3 shadow-sm">
+                            <h3 class="text-center py-3">Feedback Details</h3>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td>
+                                            {{ feedback.email }}
+                                            </td>
+                                        <tr>
+                                        <tr>
+                                            <th>Message</th>
+                                            <td>{{ feedback.message|safe }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Sent On</th>
+                                            <td> {{ feedback.created_on }}
+                                            </td>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

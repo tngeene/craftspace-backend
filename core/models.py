@@ -12,10 +12,11 @@ class Event(models.Model):
     description = models.TextField(blank=False)
     date = models.DateField(blank=True, validators=[validate_date])
     time = models.TimeField(null=True)
-    banner = models.ImageField(blank=True,upload_to='events/banners')
-    venue = models.CharField(null=True,max_length=255)
+    banner = models.ImageField(blank=True, upload_to='events/banners')
+    venue = models.CharField(null=True, max_length=255)
     ticket_price = models.FloatField(default=0.00, null=True)
-    uploaded_by = models.ForeignKey(UserAccount,related_name='events',on_delete=models.CASCADE)
+    uploaded_by = models.ForeignKey(
+        UserAccount, related_name='events', on_delete=models.CASCADE)
     is_approved = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -24,9 +25,20 @@ class Event(models.Model):
         return f'{self.name} {self.date} {self.uploaded_by}'
 
     # check if the event has passed
-    @property
-    def has_passed(self):
-        if self.date < today:
-            return True
-        else:
-            return False
+    # @property
+    # def has_passed(self):
+    #     if self.date < today:
+    #         return True
+    #     else:
+    #         return False
+
+
+class Feedback(models.Model):
+    name = models.CharField(max_length=254)
+    email = models.EmailField()
+    message = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return self.name

@@ -16,6 +16,7 @@ from .views.orders import (CustomOrderDetailView, CustomOrderListView,
 from .views.products import (CategoryCreateView, CategoryDetailView,
                              CategoryListView, CategoryUpdateView,
                              ProductDetailView, ProductListView)
+from .views.feedback import FeedbackDetailView, FeedbackListView
 
 app_name = 'dashboard'
 
@@ -79,5 +80,9 @@ urlpatterns = [
          name="custom_order_list"),
     path('custom-orders/<int:pk>/details/',
          CustomOrderDetailView.as_view(), name="custom_order_details"),
+     
+     # feedback urls
+     path('feedback/all/', FeedbackListView.as_view(), name="feedback_list"),
+     path('feedback/<int:pk>/details/', FeedbackDetailView.as_view(), name="feedback_details"),
 
 ]

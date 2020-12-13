@@ -1,95 +1,148 @@
 <div class="left-nav-wrap">
-    <div class="left-sidebar">
-        <nav class="sidebar-menu">
-            <ul id="nav-accordion">
-                <li class="sub-menu">
-                    <a href="{% url 'dashboard:index' %}" class="{% if request.path == '/dashboard/' %}active{% endif %}">
-                        <i class="ti-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="sub-menu">
-                    <a href="#" class="{% if '/products/' in request.path %}active{% endif %}">
-                        <i class="ti-package"></i>
-                        <span>Art Pieces</span>
-                    </a>
-                    <ul class="sub">
-                         <li class="{%if request.path == 'dashboard/products/' %}active{% endif %}">
-                            <a href="{% url 'dashboard:product_list' %}">All Pieces</a>
-                        </li>
-                        <li class="{%if request.path == 'dashboard/products/' %}active{% endif %}">
-                            <a href="{% url 'dashboard:product_category_list' %}">Art Categories</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sub-menu">
-                    <a href="#" class="{% if '/orders/' in request.path %}active{% endif %}">
-                        <i class="ti-shopping-cart"></i>
-                        <span>Orders</span>
-                    </a>
-                    <ul class="sub">
-                        <li class="{% if request.path == 'dashboard/orders/all' %}active{% endif %}">
-                            <a href="{% url 'dashboard:order_list' %}">All Orders</a>
-                        </li>
-                        <li class="{% if request.path == 'dashboard/custom-orders/all' %}active{% endif %}">
-                            <a href="{% url 'dashboard:custom_order_list' %}">All Custom Orders</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sub-menu">
-                    <a href="#" class="{% if '/artists/' in request.path %}active{% endif %}">
-                        <i class="ti-user"></i>
-                        <span>Artists</span>
-                    </a>
-                    <ul class="sub">
-                        <li class="{% if request.path == 'dashboard/artists/' %}active{% endif %}">
-                            <a href="{% url 'dashboard:artist_list' %}">All Artists</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sub-menu">
-                    <a href="#" class="{% if '/collectors/' in request.path %}active{% endif %}">
-                        <i class="ti-user"></i>
-                        <span>Collectors</span>
-                    </a>
-                    <ul class="sub">
-                        <li class="{% if request.path == 'dashboard/collectors/' %}active{% endif %}">
-                            <a href="{% url 'dashboard:collector_list' %}">All Collectors</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sub-menu">
-                    <a href="#" class="{% if '/events/' in request.path %}active{% endif %}">
-                        <i class="ti-calendar"></i>
-                        <span>Events</span>
-                    </a>
-                    <ul class="sub">
-                        <li class="{% if request.path == 'dashboard/events/' %}active{% endif %}">
-                            <a href="{% url 'dashboard:event_list' %}">All Events</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="sub-menu">
-                    <a href="#" class="{% if 'users' in request.path %}active{% endif %}">
-                        <i class="ti-settings"></i>
-                        <span> Settings </span>
-                    </a>
-                    <ul class="sub">
-                        <li class="#">
-                            <a href="">All System Users</a>
-                        </li>
-                        {% comment %} <li class="{% if request.path == '/dashboard/system-users/add' %}active{% endif %}">
-                            <a href="#">Add System User</a>
-                        </li>
-                        <li class="{%if request.path == 'dashboard/system-logs/' %}active{% endif %}">
-                            <a href="#">Access Logs</a>
-                        </li>
-                        <li class="{%if request.path == 'dashboard/failed-logins/' %}active{% endif %}">
-                            <a href="#">Failed Logins</a>
-                        </li> {% endcomment %}
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </div>
+  <div class="left-sidebar">
+    <nav class="sidebar-menu">
+      <ul id="nav-accordion">
+        <li class="sub-menu">
+          <a
+            href="{% url 'dashboard:index' %}"
+            class="{% if request.path == '/dashboard/' %}active{% endif %}"
+          >
+            <i class="ti-home"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="sub-menu">
+          <a
+            href="#"
+            class="{% if '/products/' in request.path %}active{% endif %}"
+          >
+            <i class="ti-package"></i>
+            <span>Art Pieces</span>
+          </a>
+          <ul class="sub">
+            <li
+              class="{%if request.path == 'dashboard/products/' %}active{% endif %}"
+            >
+              <a href="{% url 'dashboard:product_list' %}">All Pieces</a>
+            </li>
+            <li
+              class="{%if request.path == 'dashboard/products/' %}active{% endif %}"
+            >
+              <a href="{% url 'dashboard:product_category_list' %}"
+                >Art Categories</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="sub-menu">
+          <a
+            href="#"
+            class="{% if '/orders/' in request.path %}active{% endif %}"
+          >
+            <i class="ti-shopping-cart"></i>
+            <span>Orders</span>
+          </a>
+          <ul class="sub">
+            <li
+              class="{% if request.path == 'dashboard/orders/all' %}active{% endif %}"
+            >
+              <a href="{% url 'dashboard:order_list' %}">All Orders</a>
+            </li>
+            <li
+              class="{% if request.path == 'dashboard/custom-orders/all' %}active{% endif %}"
+            >
+              <a href="{% url 'dashboard:custom_order_list' %}"
+                >All Custom Orders</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="sub-menu">
+          <a
+            href="#"
+            class="{% if '/artists/' in request.path %}active{% endif %}"
+          >
+            <i class="ti-user"></i>
+            <span>Artists</span>
+          </a>
+          <ul class="sub">
+            <li
+              class="{% if request.path == 'dashboard/artists/' %}active{% endif %}"
+            >
+              <a href="{% url 'dashboard:artist_list' %}">All Artists</a>
+            </li>
+          </ul>
+        </li>
+        <li class="sub-menu">
+          <a
+            href="#"
+            class="{% if '/collectors/' in request.path %}active{% endif %}"
+          >
+            <i class="ti-user"></i>
+            <span>Collectors</span>
+          </a>
+          <ul class="sub">
+            <li
+              class="{% if request.path == 'dashboard/collectors/' %}active{% endif %}"
+            >
+              <a href="{% url 'dashboard:collector_list' %}">All Collectors</a>
+            </li>
+          </ul>
+        </li>
+        <li class="sub-menu">
+          <a
+            href="#"
+            class="{% if '/events/' in request.path %}active{% endif %}"
+          >
+            <i class="ti-calendar"></i>
+            <span>Events</span>
+          </a>
+          <ul class="sub">
+            <li
+              class="{% if request.path == 'dashboard/events/' %}active{% endif %}"
+            >
+              <a href="{% url 'dashboard:event_list' %}">All Events</a>
+            </li>
+          </ul>
+        </li>
+        <li class="sub-menu">
+          <a
+            href="{% url 'dashboard:feedback_list' %}"
+            class="{% if '/feedback/' in request.path %}active{% endif %}"
+          >
+            <i class="ti-envelope"></i>
+            <span>Feedback</span>
+          </a>
+        </li>
+        <li class="sub-menu">
+          <a href="#" class="{% if 'users' in request.path %}active{% endif %}">
+            <i class="ti-settings"></i>
+            <span> Settings </span>
+          </a>
+          <ul class="sub">
+            <li class="#">
+              <a href="">All System Users</a>
+            </li>
+            {% comment %}
+            <li
+              class="{% if request.path == '/dashboard/system-users/add' %}active{% endif %}"
+            >
+              <a href="#">Add System User</a>
+            </li>
+            <li
+              class="{%if request.path == 'dashboard/system-logs/' %}active{% endif %}"
+            >
+              <a href="#">Access Logs</a>
+            </li>
+            <li
+              class="{%if request.path == 'dashboard/failed-logins/' %}active{% endif %}"
+            >
+              <a href="#">Failed Logins</a>
+            </li>
+            {% endcomment %}
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </div>

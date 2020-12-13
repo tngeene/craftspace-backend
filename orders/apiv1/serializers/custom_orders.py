@@ -27,5 +27,5 @@ class CustomOrderDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomOrder
-        fields = ('id', 'description', 'picture', 'size', 'medium', 'due_date', 'artist',
+        fields = ('id', 'description', 'picture', 'size', 'medium', 'due_date', 'artist', 'is_complete', 'price',
                   'requested_by', 'first_name', 'last_name', 'phone_number', 'email', 'created_on', 'updated_on',)

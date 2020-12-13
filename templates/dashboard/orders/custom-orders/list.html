@@ -24,6 +24,7 @@ All Custom Orders
                             <th>Email</th>
                             <th>Artist</th>
                             <th>Order Status</th>
+                            <th>Price</th>
                             <th>Due Date</th>
                             <th>Placed On</th>
                             <th></th>
@@ -47,14 +48,15 @@ All Custom Orders
                             {% else %}
                             <td> <span class="badge badge-pill badge-warning">Pending Completion</span> </td>
                             {% endif %}
+                             {% if order.price %}
+                            <td> <span class="badge badge-pill badge-info">Ksh {{ order.price }}</span> </td>
+                            {% else %}
+                            <td> <span class="badge badge-pill badge-light"> To be quoted </span> </td>
+                            {% endif %}
                             <td>{{ order.due_date }}</td>
                             <td>{{ order.created_on }}</td>
                             <td>{{ order.order_total }}</td>
-                            {% if order.status  == 'placed' %}
-                            <td> <span class="badge badge-pill badge-info">Pending Payment</span> </td>
-                            {% elif order.status == 'paid' %}
-                            <td> <span class="badge badge-pill badge-success">Paid</span> </td>
-                            {% endif %}
+
                             <td>
                                 <a href="{% url 'dashboard:custom_order_details' order.pk %}">
                                     <button class="btn btn-primary btn-sm">View</button>
