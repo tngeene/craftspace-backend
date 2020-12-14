@@ -27,7 +27,8 @@ class ArtistProfileCreateSerializer(ModelSerializer):
 class ArtistProfileUserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('first_name','last_name', 'phone_number', 'email')
+        fields = ('id', 'first_name', 'last_name', 'phone_number', 'email')
+
 
 class ArtistProfileListSerializer(ModelSerializer):
     user = ArtistProfileUserSerializer()
