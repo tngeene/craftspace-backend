@@ -23,7 +23,6 @@ def getAccessToken(request):
 
 def lipa_na_mpesa_online(request):
     access_token = MpesaAccessToken.validated_mpesa_access_token
-    print(f"validated access token is {access_token}")
     api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
     headers = {"Authorization": "Bearer %s" % access_token}
     request = {
@@ -40,8 +39,6 @@ def lipa_na_mpesa_online(request):
         "TransactionDesc": "Testing stk push"
     }
     response = requests.post(api_url, json=request, headers=headers)
-    print(f"response is {response.text}")
-    print(f"request is {request}")
     return HttpResponse('success')
 
 @csrf_exempt
@@ -53,7 +50,6 @@ def register_urls(request):
                "ResponseType": "Completed",
                "ConfirmationURL": "https://272f96c8.ngrok.io/api/v1/c2b/confirmation",
                "ValidationURL": "https://272f96c8.ngrok.io/api/v1/c2b/validation"}
-    print(f"options are {options}")
     response = requests.post(api_url, json=options, headers=headers)
     return HttpResponse(response.text)
 
@@ -75,7 +71,6 @@ def validation(request):
 @csrf_exempt
 def confirmation(request):
     mpesa_body = request.body.decode('utf-8')
-    print(f"body is{mpesa_body}")
     mpesa_payment = json.loads(mpesa_body)
 
     payment = MpesaPayment(

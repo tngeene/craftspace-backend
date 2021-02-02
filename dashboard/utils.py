@@ -15,7 +15,6 @@ def send_welcome_email(user, password,request):
         'domain': current_site.domain,
         'password': password,
         })
-    print(request)
     email = EmailMultiAlternatives(
     subject, message, from_email='tuklabs@tuk.ac.ke', to=[user.email, ])
     email.content_subtype = 'html'
@@ -30,7 +29,6 @@ def send_suspension_email(user, request):
         'domain': current_site.domain,
         'site_name': current_site.name,
         })
-    print(request)
     email = EmailMultiAlternatives(
     subject, message, from_email='admin@craftspace.com', to=[user.email, ])
     email.content_subtype = 'html'
@@ -44,7 +42,6 @@ def send_activation_email(user, request):
         'domain': current_site.domain,
         'site_name': current_site.name,
         })
-    print(request)
     email = EmailMultiAlternatives(
     subject, message, from_email='admin@craftspace.com', to=[user.email, ])
     email.content_subtype = 'html'

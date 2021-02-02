@@ -24,7 +24,6 @@ class IsCollectorOrDissallow(BasePermission):
         user = request.user
         if request.method in SAFE_METHODS:
             return True
-        print((obj.user == request.user) and user.is_staff)
         return (obj.user == request.user) or user.is_staff
 
     #custom permission to allow only owner to edit the resource

@@ -42,7 +42,6 @@ class OrderListAPIView(ListAPIView):
 
 # mpesa variables
 access_token = MpesaAccessToken.validated_mpesa_access_token
-# print(f"access token is {access_token}")
 api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
 
 
@@ -79,8 +78,6 @@ class OrderPostView(APIView):
         else:
             order = Order.objects.create(user=self.request.user, first_name=self.request.user.first_name,
                                          last_name=self.request.user.last_name, email=self.request.user.email, phone_number=data['phone_number'], order_total=data['order_total'])
-
-            print(f"order total {order.order_total}")
         # mpesa logic
             request = {
                 "BusinessShortCode": LipaNaMpesa.business_shortcode,
@@ -98,10 +95,6 @@ class OrderPostView(APIView):
                 "TransactionDesc": "Testing stk push"
             }
             response = requests.post(api_url, json=request, headers=headers)
-
-            print(f"response is {response.status_code}")
-            print(f"response data is {response.text}")
-
 
         # processing order items and saving to db
         order_items = data['order_items']
